@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?><manifest xmlns:android="http://schemas.android.com/apk/res/android" package="cn.sharesdk.demo" android:versionName="1.0.1" android:versionCode="101">
+  <uses-sdk android:targetSdkVersion="28" android:minSdkVersion="19"/>
+  <uses-permission android:name="android.permission.INTERNET" xmlns:android="http://schemas.android.com/apk/res/android"/>
+  <uses-permission android:name="android.permission.CAMERA"/>
+  <uses-permission android:name="android.permission.VIBRATE" xmlns:android="http://schemas.android.com/apk/res/android"/>
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" xmlns:android="http://schemas.android.com/apk/res/android"/>
+  <application android:debuggable="true" android:label="心电" android:name="io.flutter.app.FlutterApplication" android:icon="@mipmap/ic_launcher">
+    <activity android:hardwareAccelerated="true" android:launchMode="singleTop" android:name="com.example.flutter_app.MainActivity" android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode" android:theme="@style/LaunchTheme" android:windowSoftInputMode="adjustResize">
+      <meta-data android:name="io.flutter.app.android.SplashScreenUntilFirstFrame" android:value="true"/>
+      <intent-filter xmlns:android="http://schemas.android.com/apk/res/android">
+        <action android:name="android.intent.action.MAIN"/>
+        <category android:name="android.intent.category.LAUNCHER"/>
+      </intent-filter>
+    </activity>
+    <meta-data android:name="Mob-AppKey" android:value="moba6b6c6d6" xmlns:android="http://schemas.android.com/apk/res/android"/>
+    <meta-data android:name="Mob-AppSecret" android:value="b89d2427a3bc7ad1aea1e1e8c1d36bf3"/>
+    <provider android:name="com.mob.MobProvider" android:exported="false" android:authorities="cn.sharesdk.demo.com.mob.MobProvider" android:multiprocess="true"/>
+    <activity xmlns:tools="http://schemas.android.com/tools" android:windowSoftInputMode="stateHidden|adjustResize" android:name="com.mob.tools.MobUIShell" android:configChanges="keyboardHidden|orientation|screenSize" android:theme="@android:style/Theme.Translucent.NoTitleBar" tools:node="merge" xmlns:android="http://schemas.android.com/apk/res/android">
+      <intent-filter>
+        <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY"/>
+        <category android:name="android.intent.category.DEFAULT"/>
+      </intent-filter>
+      <intent-filter android:priority="1000" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
+        <data android:scheme="db-7janx53ilz11gbs"/>
+        <action android:name="android.intent.action.VIEW"/>
+        <category android:name="android.intent.category.BROWSABLE"/>
+        <category android:name="android.intent.category.DEFAULT"/>
+      </intent-filter>
+    </activity>
+    <activity android:launchMode="singleTask" android:name="cn.sharesdk.tencent.qq.ReceiveActivity" android:noHistory="true">
+      <intent-filter>
+        <data android:scheme="tencent1109656823"/>
+        <action android:name="android.intent.action.VIEW"/>
+        <category android:name="android.intent.category.DEFAULT"/>
+        <category android:name="android.intent.category.BROWSABLE"/>
+      </intent-filter>
+    </activity>
+    <activity android:launchMode="singleTask" android:name="com.tencent.tauth.AuthActivity" android:noHistory="true"/>
+    <activity android:screenOrientation="behind" android:name="com.tencent.connect.common.AssistActivity" android:configChanges="orientation|keyboardHidden|screenSize" android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+    <provider android:name="cn.sharesdk.framework.utils.ShareSDKFileProvider" android:grantUriPermissions="true" android:exported="false" android:authorities="cn.sharesdk.demo.cn.sharesdk.ShareSDKFileProvider"/>
+    <activity android:name="cn.sharesdk.line.LineHandlerActivity" android:configChanges="orientation|screenSize|keyboardHidden" android:exported="true">
+      <intent-filter>
+        <action android:name="android.intent.action.VIEW"/>
+        <category android:name="android.intent.category.DEFAULT"/>
+        <category android:name="android.intent.category.BROWSABLE"/>
+        <data android:scheme="null"/>
+      </intent-filter>
+    </activity>
+    <activity-alias android:name=".lineapi.LineAuthenticationCallbackActivity" android:exported="true" android:targetActivity="cn.sharesdk.line.LineHandlerActivity"/>
+    <activity android:name="cn.sharesdk.kakao.talk.ReceiveActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar" android:exported="true">
+      <intent-filter>
+        <action android:name="android.intent.action.VIEW"/>
+        <category android:name="android.intent.category.DEFAULT"/>
+        <category android:name="android.intent.category.BROWSABLE"/>
+        <data android:scheme="kakao48d3f524e4a636b08d81b3ceb50f1003" android:host="kakaolink"/>
+      </intent-filter>
+    </activity>
+    <activity android:name="cn.sharesdk.facebookmessenger.ReceiveActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar" android:exported="true">
+      <intent-filter>
+        <action android:name="android.intent.action.PICK"/>
+        <category android:name="android.intent.category.DEFAULT"/>
+        <category android:name="com.facebook.orca.category.PLATFORM_THREAD_20150314"/>
+      </intent-filter>
+    </activity>
+    <activity xmlns:tools="http://schemas.android.com/tools" android:name="cn.sharesdk.wechat.utils.WechatHandlerActivity" android:configChanges="keyboardHidden|orientation|screenSize" android:exported="false" tools:node="merge"/>
+    <activity-alias xmlns:tools="http://schemas.android.com/tools" android:name="cn.sharesdk.demo.wxapi.WXEntryActivity" android:exported="true" android:targetActivity="cn.sharesdk.wechat.utils.WechatHandlerActivity" tools:node="merge"/>
+    <activity xmlns:tools="http://schemas.android.com/tools" android:name="cn.sharesdk.yixin.utils.YixinHandlerActivity" android:configChanges="keyboardHidden|orientation|screenSize" android:exported="false" tools:node="merge"/>
+    <activity-alias xmlns:tools="http://schemas.android.com/tools" android:name="cn.sharesdk.demo.yxapi.YXEntryActivity" android:exported="true" android:targetActivity="cn.sharesdk.yixin.utils.YixinHandlerActivity" tools:node="merge"/>
+    <activity xmlns:tools="http://schemas.android.com/tools" android:name="cn.sharesdk.alipay.utils.AlipayHandlerActivity" android:configChanges="keyboardHidden|orientation|screenSize" android:exported="false" tools:node="merge"/>
+    <activity-alias xmlns:tools="http://schemas.android.com/tools" android:name="cn.sharesdk.demo.apshare.ShareEntryActivity" android:exported="true" android:targetActivity="cn.sharesdk.alipay.utils.AlipayHandlerActivity" tools:node="merge"/>
+    <activity xmlns:tools="http://schemas.android.com/tools" android:name="cn.sharesdk.dingding.utils.DingdingHandlerActivity" android:configChanges="keyboardHidden|orientation|screenSize" android:exported="false" tools:node="merge"/>
+    <activity-alias xmlns:tools="http://schemas.android.com/tools" android:name="cn.sharesdk.demo.ddshare.DDShareActivity" android:exported="true" android:targetActivity="cn.sharesdk.dingding.utils.DingdingHandlerActivity" tools:node="merge"/>
+  </application>
+  <uses-permission xmlns:tools="http://schemas.android.com/tools" android:name="android.permission.ACCESS_WIFI_STATE"/>
+  <uses-permission xmlns:tools="http://schemas.android.com/tools" android:name="android.permission.CHANGE_WIFI_STATE"/>
+  <uses-permission xmlns:tools="http://schemas.android.com/tools" android:name="android.permission.ACCESS_NETWORK_STATE"/>
+  <uses-permission xmlns:tools="http://schemas.android.com/tools" android:name="android.permission.READ_PHONE_STATE"/>
+  <uses-permission xmlns:tools="http://schemas.android.com/tools" android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+  <uses-permission xmlns:tools="http://schemas.android.com/tools" android:name="android.permission.ACCESS_FINE_LOCATION"/>
+  <uses-permission xmlns:tools="http://schemas.android.com/tools" android:name="android.permission.CHANGE_NETWORK_STATE"/>
+  <uses-permission xmlns:tools="http://schemas.android.com/tools" android:name="android.permission.SEND_SMS"/>
+  <uses-permission xmlns:tools="http://schemas.android.com/tools" android:name="android.permission.BLUETOOTH"/>
+</manifest>
