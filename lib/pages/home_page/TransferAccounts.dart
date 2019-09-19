@@ -1,5 +1,6 @@
 //这是转账页面
 import 'package:flutter/material.dart';
+import 'package:flutter_app/pages/home_page/TransferAccountsConfirm.dart';
 import 'package:flutter_app/widget/AppTitleBar.dart';
 import 'package:flutter_app/widget/title_barA.dart';
 
@@ -18,12 +19,14 @@ class _TransferAccountsState extends State<TransferAccounts> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBarA(
+          child: AppTitleBar(title: 'TinhTinh Transfer accounts'),
+        ),
         body: SingleChildScrollView(
             child: Container(
                 color: Color(0xffF8F8F8),
                 child: Column(
                   children: <Widget>[
-                    AppTitleBar(title: 'TinhTinh Transfer accounts'),
                     buildPhoneTextField(),
                     buildHintText(),
                     buildNextButton(),
@@ -46,7 +49,12 @@ class _TransferAccountsState extends State<TransferAccounts> {
                 fontSize: 18.0) //Theme.of(context).primaryTextTheme.headline,
             ),
         color: Color(0xffC74F3A),
-        onPressed: () async {},
+        onPressed: () {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (BuildContext context) {
+            return TransferAccountsConfirm();
+          }));
+        },
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(
                 4.0)), //StadiumBorder(side: BorderSide()),

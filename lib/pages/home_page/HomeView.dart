@@ -29,10 +29,12 @@ class _HomeViewState extends State<HomeView>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBarA(
+          child: AppTitleBar(title: 'TinhTinh Pay'),
+        ),
         body: SingleChildScrollView(
             child: Column(
           children: <Widget>[
-            AppTitleBar(title: 'TinhTinh Pay'),
             buildTitleCode(),
             buildInfomationServices(),
             buildHotEvents(),
@@ -136,28 +138,31 @@ class _HomeViewState extends State<HomeView>
         imageUrl: 'images/transfer_accounts.png',
         linkUrl: '转账'),
     InfoService(
-        title: 'Recharge', imageUrl: 'images/recharge.png', linkUrl: ''),
+        title: 'Recharge', imageUrl: 'images/recharge.png', linkUrl: '充值'),
     InfoService(
         title: 'Cash withdrawal',
         imageUrl: 'images/cash_withdrawal.png',
-        linkUrl: ''),
+        linkUrl: '提现'),
     InfoService(
         title: 'Exchange remittance',
         imageUrl: 'images/exchange_remittance.png',
-        linkUrl: ''),
+        linkUrl: '兑汇'),
     InfoService(
         title: 'Virtual Card',
         imageUrl: 'images/virtual_card.png',
-        linkUrl: ''),
-    InfoService(title: 'Account', imageUrl: 'images/account.png', linkUrl: ''),
+        linkUrl: '虚拟卡'),
+    InfoService(
+        title: 'Account', imageUrl: 'images/account.png', linkUrl: '账户'),
     InfoService(
         title: 'Living expenses',
         imageUrl: 'images/living_expenses.png',
         linkUrl: ''),
     InfoService(
-        title: 'Contact us', imageUrl: 'images/contact_us.png', linkUrl: ''),
+        title: 'Contact us',
+        imageUrl: 'images/contact_us.png',
+        linkUrl: '联系我们'),
     InfoService(
-        title: 'My ThinThin', imageUrl: 'images/my_thinthin.png', linkUrl: '')
+        title: 'My ThinThin', imageUrl: 'images/my_thinthin.png', linkUrl: '我的')
   ];
 
   buildInfomationServices() {

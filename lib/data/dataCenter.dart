@@ -8,7 +8,7 @@ import 'coachData.dart';
 import 'recordWeight.dart';
 
 //是否测试
-final eIsTest = true;
+final eIsTest = false;
 //账户信息
 final eAccountData = AccountData(
   nickName: '测试用户',
@@ -43,13 +43,14 @@ String getToken() {
     return 'bearer ${eAccountData.accessToken}';
   } else {
     return 'Basic ${base64Encode(utf8.encode('fuhk:fuhksecret'))}';
+    //return 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1Njg4MDU0MTEsInVzZXJfbmFtZSI6IjQ1OTA0ZTg2Njk5ZDQzNDg4MDgyNjZmODhkM2QwNWQxIiwiYXV0aG9yaXRpZXMiOlsiYWRtaW4iLCJST0xFX1VTRVIiXSwianRpIjoiMzE2ZDQ3MDMtMTA3NS00MGEzLWIwZmQtMzIwNTAyN2ExNTY3IiwiY2xpZW50X2lkIjoiZnVoayIsInNjb3BlIjpbImFsbCJdfQ.X3IariIlr6r08oSpwsswlpbPAyOcfkAEWliTdWlmUxY';
   }
 }
 
 //根据token去登陆
 toLoginByToken() async {
   List hears = [{'name': 'authorization','value': 'bearer ${eAccountData.accessToken}'}];
-  String isNewPeople = await ECHttp.getData('user/consumerDetails/get', hears);
+  String isNewPeople = await ECHttp.getData('user/user/get', hears);
   if (isNewPeople != null && isNewPeople.length > 0) {
     var object1 = json.decode(isNewPeople);
     if (object1['success'] && object1['data'] != null) {
@@ -63,8 +64,6 @@ toLoginByToken() async {
 afterLogin() {
   getAccountData();
   getUserData();
-  //BlueHelper.initstate();
-  //获取历史的体重记录数据
   getRecordData();
 }
 
@@ -114,8 +113,6 @@ getUserData() async {
       eUserInfo.city = jsonData['data']['address'];
       eUserInfo.height = jsonData['data']['height'];
       eUserInfo.weight = '${jsonData['data']['weightId']}kg';
-      //eUserInfo.lifeStyle = jsonData['data']['habit'];
-      //eUserInfo.historyIll = jsonData['data']['medicalHistory'];
       DateTime bir = DateTime.parse(eUserInfo.birthDate);
       eUserInfo.age = '${DateTime.now().year -  bir.year}';
     }

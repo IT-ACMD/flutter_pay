@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../user_self/minedpage.dart';
 
 import 'homeView.dart';
 
@@ -8,7 +7,7 @@ class Index extends StatefulWidget {
 }
 
 class _IndexState extends State<Index> {
-  List<Widget> pageViewList2 = [HomeView(), MinePage()];
+  List<Widget> pageViewList2 = [HomeView()];
   int _nowindex = 0;
 
   Color itemOne = Colors.blue;

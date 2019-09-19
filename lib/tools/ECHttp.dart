@@ -37,20 +37,24 @@ class ECHttp {
     return result;
   }
 
-  static postData(url, params) async {
+  /** 
+   * params "mobile=$phone&smsCode=$code"
+   */
+  static postData(String url, String params) async {
     print('------postData--------');
     var result;
     HttpClient httpClient = new HttpClient();
     HttpClientRequest request = await httpClient.postUrl(Uri.parse('$eServiceUrl$url'));
+
     // 设置请求头
     request.headers.set(HttpHeaders.contentTypeHeader, 'application/x-www-form-urlencoded');
-    //Base64 加密username he userpwd
     var token = getToken();
     request.headers.set(HttpHeaders.authorizationHeader, token);
     request.headers.add('deviceId', '008');
+
     /// 添加请求体
-    /// request.write("mobile=$phone&smsCode=$code");
     request.write(params);
+
     try {
       HttpClientResponse response = await request.close();
       String responseBody = await response.transform(utf8.decoder).join();
@@ -66,35 +70,31 @@ class ECHttp {
     return result;
   }
 
-
-  static postDataJson(url, data) async {
-    print('------postData--------');
+  
+  static postDataJson(String url, Map map) async {
+    print('------postDataJson--------');
     var result;
     HttpClient httpClient = new HttpClient();
     HttpClientRequest request = await httpClient.postUrl(Uri.parse('$eServiceUrl$url'));
 
     // 设置请求头
     request.headers.set(HttpHeaders.contentTypeHeader, 'application/json');
-
-    //Base64 加密username he userpwd
     var token = getToken();
     request.headers.set(HttpHeaders.authorizationHeader, token);
-    request.headers.add('deviceId', '008');
 
     /// 添加请求体
-    /// request.write("mobile=$phone&smsCode=$code");
-    request.add(utf8.encode(json.encode(data)));
+    request.add(utf8.encode(json.encode(map)));
+
     try {
       HttpClientResponse response = await request.close();
       String responseBody = await response.transform(utf8.decoder).join();
-      
       if (response.statusCode == HttpStatus.ok) {
-        print('postData请求成功');
+        print('postDataJson请求成功');
         print(responseBody);
         result = responseBody;
       }
     } catch (exception) {
-      print('postData请求失败');
+      print('postDataJson请求失败');
       result = null;
     }
     return result;

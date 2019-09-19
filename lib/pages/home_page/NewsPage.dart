@@ -45,10 +45,12 @@ class NoMessagesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBarA(
+          child: AppTitleBar(title: 'TinhTinh News'),
+        ),
         backgroundColor: Color(0xfff8f8f8),
         body: Stack(
           children: <Widget>[
-            AppTitleBar(title: 'TinhTinh News'),
             Center(
                 child: Column(
               mainAxisSize: MainAxisSize.min,

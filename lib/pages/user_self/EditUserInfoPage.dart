@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 
 class EditUserInfoPage extends StatefulWidget {
+  String name = '';
+
+  EditUserInfoPage(String nikeName){
+    this.name = nikeName;
+  }
+  
   @override
   State<StatefulWidget> createState() {
     return new _EditUserInfoPageState();
@@ -9,6 +15,14 @@ class EditUserInfoPage extends StatefulWidget {
 
 class _EditUserInfoPageState extends State<EditUserInfoPage> {
   var inputText;
+  TextEditingController _name = TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _name.text = widget.name;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +46,7 @@ class _EditUserInfoPageState extends State<EditUserInfoPage> {
           ]),
       body: new Container(
         child: new TextField(
+          controller: _name,
           decoration: new InputDecoration(
             hintText: '请输入内容',
           ),

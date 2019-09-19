@@ -86,6 +86,33 @@ flutter:
     - images/ecg_user1.png
     - images/account_people_shape.png
     - images/no_message.png
+
+    - images/default_avatar.png
+    - images/account_balance.png
+    - images/my_card_bag.png
+    - images/nvite_courtesy.png
+    - images/bank_card.png
+    - images/set_up.png
+    - images/about_us.png
+    - images/dtod_recharge.png
+    - images/dot_recharge.png
+
+    - images/forward.png
+    - images/usd.png
+    - images/cny.png
+    - images/mastercard.png
+    - images/visa.png
+    
+    - images/wallet.png
+    - images/at.png
+    - images/phone.png
+    - images/money.png
+    - images/cash_to_bank_card.png
+    - images/card_number.png
+    - images/arrow_right.png
+    - images/radio.png
+    
+
     
     
     

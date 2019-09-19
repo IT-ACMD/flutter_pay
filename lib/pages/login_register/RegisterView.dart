@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app/data/dataCenter.dart';
+import 'package:flutter_app/tools/ECHttp.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'loginView.dart';
@@ -154,9 +157,18 @@ class _RegisterViewState extends State<RegisterView> {
             }), (route) => route == null);
           }
           if (_formKey.currentState.validate()) {
-            ///只有输入的内容符合要求通过才会到达此处
-            //_formKey.currentState.save();
-            
+            var url = 'user/user/insert';
+            Map map = {"phone": _phone};
+            var result = await ECHttp.postDataJson(url, map);
+            if (result != null) {
+              var jsonData = json.decode(result);
+              if (jsonData['success']) {
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (BuildContext context) {
+                  return LoginView();
+                }), (route) => route == null);
+              }
+            }
           }
         },
         shape: RoundedRectangleBorder(
@@ -233,6 +245,7 @@ class _RegisterViewState extends State<RegisterView> {
               return '请输入正确的手机号';
             }
           },
+        
         )),
       ],
     );

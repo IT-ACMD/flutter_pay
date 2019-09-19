@@ -31,8 +31,7 @@ class _AppTitleBarState extends State<AppTitleBar> {
             Expanded(
               child: Container(),
             ),
-            Expanded(
-                child: Row(
+            Row(
               children: <Widget>[
                 Builder(
                   builder: (BuildContext context) {
@@ -49,15 +48,16 @@ class _AppTitleBarState extends State<AppTitleBar> {
                     );
                   },
                 ),
-                Text(
-                  widget.title,
-                  style: TextStyle(
-                      fontSize: 20.0,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w500),
-                ),
                 Expanded(
-                  child: Container(),
+                  child: Text(
+                    widget.title,
+                    style: TextStyle(
+                        fontSize: 18.0,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
                 InkWell(
                   child: Image.asset(
@@ -74,7 +74,7 @@ class _AppTitleBarState extends State<AppTitleBar> {
                   },
                 ),
               ],
-            ))
+            )
           ],
         ));
   }

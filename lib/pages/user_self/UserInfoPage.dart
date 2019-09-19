@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/widget/AppTitleBar.dart';
 import 'package:flutter_app/widget/check_sex_dialog.dart';
+import 'package:flutter_app/widget/title_barA.dart';
 
 import 'EditUserInfoPage.dart';
 
@@ -11,26 +13,23 @@ class UserInfoPage extends StatefulWidget {
 }
 
 class _UserInfoPageState extends State<UserInfoPage> {
-  var defaultAvatar = 'images/ww_default_avatar.png';
-  var qrCodeImg = 'images/ww_main_me_qrcode.png';
-  var nikeName = 'Martian Yu';
+  var defaultAvatar = 'images/default_avatar.png';
+  var nikeName = 'xiaoxiao';
   int groupValue = 1;
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        appBar: new AppBar(
-          title: new Text(
-            '个人信息',
-            style: TextStyle(color: Colors.white),
-          ),
+        appBar: AppBarA(
+          child: AppTitleBar(title: 'TinhTinh Personal information'),
         ),
         body: new Container(
+          color: Colors.white,
           child: new Column(
             children: <Widget>[
               new Container(
-                height: 20.0,
-                color: const Color(0xffebebeb),
+                height: 11.0,
+                color: const Color(0xffF8F8F8),
               ),
               new Container(
                 margin: new EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
@@ -39,9 +38,9 @@ class _UserInfoPageState extends State<UserInfoPage> {
                   children: <Widget>[
                     new Expanded(
                       child: new Text(
-                        '头像',
+                        'Head portrait',
                         style: TextStyle(
-                            fontSize: 16.0, color: const Color(0xff353535)),
+                            fontSize: 16.0, color: const Color(0xff222222)),
                       ),
                     ),
                     new Padding(
@@ -53,9 +52,8 @@ class _UserInfoPageState extends State<UserInfoPage> {
                 ),
               ),
               new Container(
-                margin: new EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 0.0),
-                height: 1.0,
-                color: const Color(0xffebebeb),
+                height: 9.0,
+                color: const Color(0xffF8F8F8),
               ),
               new GestureDetector(
                 onTap: _startEditUserInfoPage,
@@ -66,17 +64,17 @@ class _UserInfoPageState extends State<UserInfoPage> {
                     children: <Widget>[
                       new Expanded(
                         child: new Text(
-                          '昵称',
+                          'Name',
                           style: TextStyle(
-                              fontSize: 16.0, color: const Color(0xff353535)),
+                              fontSize: 16.0, color: const Color(0xff222222)),
                         ),
                       ),
                       new Padding(
                         padding: new EdgeInsets.fromLTRB(0.0, 0.0, 20.0, 0.0),
                         child: new Text(
-                          '$nikeName',
+                          nikeName,
                           style: TextStyle(
-                              fontSize: 16.0, color: const Color(0xffAAAAAA)),
+                              fontSize: 16.0, color: const Color(0xff9A9A9A)),
                         ),
                       ),
                     ],
@@ -86,7 +84,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
               new Container(
                 margin: new EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 0.0),
                 height: 1.0,
-                color: const Color(0xffebebeb),
+                color: const Color(0xffF8F8F8),
               ),
               new Container(
                 margin: new EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
@@ -95,17 +93,17 @@ class _UserInfoPageState extends State<UserInfoPage> {
                   children: <Widget>[
                     new Expanded(
                       child: new Text(
-                        '微信号',
+                        'Account',
                         style: TextStyle(
-                            fontSize: 16.0, color: const Color(0xff353535)),
+                            fontSize: 16.0, color: const Color(0xff222222)),
                       ),
                     ),
                     new Padding(
                       padding: new EdgeInsets.fromLTRB(0.0, 0.0, 20.0, 0.0),
                       child: new Text(
-                        'yukuoyuan',
+                        '+86-17*******79',
                         style: TextStyle(
-                            fontSize: 16.0, color: const Color(0xffAAAAAA)),
+                            fontSize: 16.0, color: const Color(0xff9a9a9a)),
                       ),
                     ),
                   ],
@@ -114,7 +112,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
               new Container(
                 margin: new EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 0.0),
                 height: 1.0,
-                color: const Color(0xffebebeb),
+                color: const Color(0xffF8F8F8),
               ),
               new Container(
                 margin: new EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
@@ -123,22 +121,26 @@ class _UserInfoPageState extends State<UserInfoPage> {
                   children: <Widget>[
                     new Expanded(
                       child: new Text(
-                        '头像',
+                        'Document type',
                         style: TextStyle(
-                            fontSize: 16.0, color: const Color(0xff353535)),
+                            fontSize: 16.0, color: const Color(0xff222222)),
                       ),
                     ),
                     new Padding(
                       padding: new EdgeInsets.fromLTRB(0.0, 0.0, 20.0, 0.0),
-                      child:
-                          new Image.asset(qrCodeImg, width: 18.0, height: 18.0),
+                      child: new Text(
+                        'ID',
+                        style: TextStyle(
+                            fontSize: 16.0, color: const Color(0xff9A9A9A)),
+                      ),
                     ),
                   ],
                 ),
               ),
               new Container(
-                height: 20.0,
-                color: const Color(0xffebebeb),
+                margin: new EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 0.0),
+                height: 1.0,
+                color: const Color(0xffF8F8F8),
               ),
               new GestureDetector(
                 //onTap: _showCheckSexDiaolog,
@@ -149,17 +151,17 @@ class _UserInfoPageState extends State<UserInfoPage> {
                     children: <Widget>[
                       new Expanded(
                         child: new Text(
-                          '性别',
+                          'ID number',
                           style: TextStyle(
-                              fontSize: 16.0, color: const Color(0xff353535)),
+                              fontSize: 16.0, color: const Color(0xff222222)),
                         ),
                       ),
                       new Padding(
                         padding: new EdgeInsets.fromLTRB(0.0, 0.0, 20.0, 0.0),
                         child: new Text(
-                          groupValue == 1 ? '男' : '女',
+                          '',
                           style: TextStyle(
-                              fontSize: 16.0, color: const Color(0xffAAAAAA)),
+                              fontSize: 16.0, color: const Color(0xff9A9A9A)),
                         ),
                       ),
                     ],
@@ -169,7 +171,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
               new Container(
                 margin: new EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 0.0),
                 height: 1.0,
-                color: const Color(0xffebebeb),
+                color: const Color(0xffF8F8F8),
               ),
               new Container(
                 margin: new EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
@@ -178,45 +180,17 @@ class _UserInfoPageState extends State<UserInfoPage> {
                   children: <Widget>[
                     new Expanded(
                       child: new Text(
-                        '地区',
+                        'Mailbox',
                         style: TextStyle(
-                            fontSize: 16.0, color: const Color(0xff353535)),
+                            fontSize: 16.0, color: const Color(0xff222222)),
                       ),
                     ),
                     new Padding(
                       padding: new EdgeInsets.fromLTRB(0.0, 0.0, 20.0, 0.0),
                       child: new Text(
-                        '北京海淀',
+                        'Unbound',
                         style: TextStyle(
-                            fontSize: 16.0, color: const Color(0xffAAAAAA)),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              new Container(
-                margin: new EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 0.0),
-                height: 1.0,
-                color: const Color(0xffebebeb),
-              ),
-              new Container(
-                margin: new EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
-                child: new Row(
-                  children: <Widget>[
-                    new Text(
-                      '个性签名',
-                      style: TextStyle(
-                          fontSize: 16.0, color: const Color(0xff353535)),
-                    ),
-                    new Expanded(
-                      child: new Padding(
-                        padding: new EdgeInsets.fromLTRB(0.0, 15.0, 20.0, 15.0),
-                        child: new Text(
-                          '男人要么拎枪保家卫国,要么办公室运筹帷幄',
-                          textAlign: TextAlign.right,
-                          style: TextStyle(
-                              fontSize: 16.0, color: const Color(0xffAAAAAA)),
-                        ),
+                            fontSize: 16.0, color: const Color(0xff9A9A9A)),
                       ),
                     ),
                   ],
@@ -224,7 +198,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
               ),
               new Expanded(
                 child: new Container(
-                  color: const Color(0xffebebeb),
+                  color: const Color(0xffF8F8F8),
                 ),
               )
             ],
@@ -235,11 +209,13 @@ class _UserInfoPageState extends State<UserInfoPage> {
   _startEditUserInfoPage() async {
     final result = await Navigator.push(
       context,
-      new MaterialPageRoute(builder: (context) => new EditUserInfoPage()),
+      new MaterialPageRoute(builder: (context) => new EditUserInfoPage(nikeName)),
     );
-    setState(() {
-      this.nikeName = result;
-    });
+    if (result != null) {
+      setState(() {
+        this.nikeName = result;
+      });
+    }
   }
 
   ///
