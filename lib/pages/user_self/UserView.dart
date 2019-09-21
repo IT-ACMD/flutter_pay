@@ -103,7 +103,7 @@ class _UserViewState extends State<UserView> {
                       Container(
                           padding: EdgeInsets.only(bottom: 7.0),
                           child: Text(
-                            eAccountData.nickName,
+                            'eAccountData.nickName',
                             style: TextStyle(
                                 fontSize: 18.0,
                                 fontWeight: FontWeight.bold,
@@ -254,7 +254,7 @@ class _UserViewState extends State<UserView> {
                 Container(
                   padding: EdgeInsets.fromLTRB(17.0, 0.0, 7.0, 11.0),
                   child: Text(
-                    '${eUserInfo.weightPlan}',
+                    '',
                     style: TextStyle(
                         fontSize: 30.0,
                         fontWeight: FontWeight.bold,

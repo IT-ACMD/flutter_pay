@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/data/dataCenter.dart';
 import 'package:flutter_app/widget/AppTitleBar.dart';
 import 'package:flutter_app/widget/check_sex_dialog.dart';
 import 'package:flutter_app/widget/title_barA.dart';
@@ -14,7 +15,6 @@ class UserInfoPage extends StatefulWidget {
 
 class _UserInfoPageState extends State<UserInfoPage> {
   var defaultAvatar = 'images/default_avatar.png';
-  var nikeName = 'xiaoxiao';
   int groupValue = 1;
 
   @override
@@ -72,7 +72,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
                       new Padding(
                         padding: new EdgeInsets.fromLTRB(0.0, 0.0, 20.0, 0.0),
                         child: new Text(
-                          nikeName,
+                          eUserInfo.name,
                           style: TextStyle(
                               fontSize: 16.0, color: const Color(0xff9A9A9A)),
                         ),
@@ -101,7 +101,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
                     new Padding(
                       padding: new EdgeInsets.fromLTRB(0.0, 0.0, 20.0, 0.0),
                       child: new Text(
-                        '+86-17*******79',
+                        '+86-${eUserInfo.pwdPhone}',
                         style: TextStyle(
                             fontSize: 16.0, color: const Color(0xff9a9a9a)),
                       ),
@@ -209,11 +209,11 @@ class _UserInfoPageState extends State<UserInfoPage> {
   _startEditUserInfoPage() async {
     final result = await Navigator.push(
       context,
-      new MaterialPageRoute(builder: (context) => new EditUserInfoPage(nikeName)),
+      new MaterialPageRoute(builder: (context) => new EditUserInfoPage(eUserInfo.name)),
     );
     if (result != null) {
       setState(() {
-        this.nikeName = result;
+        eUserInfo.name = result;
       });
     }
   }

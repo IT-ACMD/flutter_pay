@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/data/dataCenter.dart';
 
 class MyDrawer extends StatelessWidget {
   // 菜单文本前面的图标大小
@@ -68,7 +69,7 @@ class MyDrawer extends StatelessWidget {
     if (index == 0) {
       // render cover image
       var img = Image.asset(
-        'images/ecg_user1.png',
+        'images/default_avatar.png',
         width: 68.0,
         height: 68.0,
         fit: BoxFit.cover,
@@ -100,10 +101,10 @@ class MyDrawer extends StatelessWidget {
                           height: 1.3),
                       children: <TextSpan>[
                         TextSpan(
-                            text: '\nXIAOXIAO',
+                            text: '\n${eUserInfo.name}',
                             style: TextStyle(color: Colors.white)),
                         TextSpan(
-                            text: '\nYour ID ：12345',
+                            text: '\nYour ID ：${eUserInfo.cardId}',
                             style:
                                 TextStyle(color: Colors.white, fontSize: 10.0))
                       ]),

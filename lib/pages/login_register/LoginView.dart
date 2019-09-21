@@ -1,15 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app/data/dataCenter.dart';
+import 'package:flutter_app/pages/login_register/RegisterView.dart';
 import 'package:flutter_app/tools/ECHttp.dart';
-import 'package:flutter_app/tools/Filehelper.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sharesdk/sharesdk.dart';
-
-import '../../config.dart';
 
 /// 墨水瓶（`InkWell`）可用时使用的字体样式。
 final TextStyle _availableStyle = TextStyle(
@@ -93,9 +90,7 @@ class _LoginViewState extends State<LoginView> {
         child: ListView(
           padding: EdgeInsets.symmetric(horizontal: 35.0),
           children: <Widget>[
-            SizedBox(
-              height: 50.0,
-            ),
+            SizedBox(height: 50.0,),
             buildTitle(),
             SizedBox(height: 50.0),
             buildPhoneTextField(),
@@ -110,10 +105,38 @@ class _LoginViewState extends State<LoginView> {
               height: 1.0,
             ),
             buildLoginButton(context),
+            buildRegisterButton(),
           ],
         ),
       ),
     ));
+  }
+
+  buildRegisterButton() {
+    return Container(
+      margin: EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 0.0),
+      height: 45.0,
+      width: double.infinity,
+      child: OutlineButton(
+        child: Text('Register',
+            style: TextStyle(
+                color: Colors.black,
+                fontSize: 18.0,
+                fontWeight: FontWeight.w600)),
+        color: Colors.black,
+        highlightedBorderColor: Colors.white,
+        borderSide: BorderSide(width: 2.0, color: Colors.black),
+        onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (BuildContext context) {
+            return RegisterView();
+          }));
+        },
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(
+                4.0)), //StadiumBorder(side: BorderSide()),
+      ),
+    );
   }
 
   Widget buildOtherText(BuildContext context) {
@@ -141,7 +164,6 @@ class _LoginViewState extends State<LoginView> {
                   style: TextStyle(color: Colors.green),
                 ),
                 onTap: () {
-                  //TODO跳转到注册页面
                   print("去注册");
                   Navigator.pop(context);
                 },
@@ -165,7 +187,6 @@ class _LoginViewState extends State<LoginView> {
                             'icon']), //ImageIcon(AssetImage('images/QQ.png')),
                         iconSize: 50.0,
                         onPressed: () {
-                          //TODO : 第三方登录方法
                           Scaffold.of(context).showSnackBar(new SnackBar(
                             content: new Text("${item['title']}登录"),
                             action: new SnackBarAction(
@@ -184,38 +205,6 @@ class _LoginViewState extends State<LoginView> {
               ))
           .toList(),
     );
-  }
-
-  DefaultTextStyle buildUserProtocolText() {
-    return DefaultTextStyle(
-        style: TextStyle(color: Colors.white, fontSize: 11.0),
-        textAlign: TextAlign.left,
-        child: Text.rich(TextSpan(children: <TextSpan>[
-          TextSpan(
-            text: '注册即同意 心电 ',
-          ),
-          TextSpan(
-            text: '用户协议',
-            style: TextStyle(
-              decoration: TextDecoration.underline,
-              decorationColor: Colors.white,
-            ),
-          ),
-          TextSpan(
-            text: ' 和 ',
-          ),
-          TextSpan(
-            text: '隐私政策',
-            style: TextStyle(
-              color: Colors.white,
-              decoration: TextDecoration.underline,
-              decorationColor: Colors.white,
-            ),
-          )
-        ])
-            //'    ',
-            //style: TextStyle(color: Colors.white, fontSize: 11.0),
-            ));
   }
 
   buildLoginButton(BuildContext context) {
@@ -243,13 +232,10 @@ class _LoginViewState extends State<LoginView> {
             String result = await ECHttp.postData(url, params);
             if (result != null && result.length > 0) {
               var object = json.decode(result);
-              eAccountData.accessToken = object['access_token'];
-              //创建文件写入token
-              String url = await Filehelper.getAppdataUrl();
-              File token = new File('$url/$accessTokenName');
-              token.writeAsString(eAccountData.accessToken);
+              eUserInfo.accessToken = object['access_token'];
+              afterLogin();
               Navigator.pushNamedAndRemoveUntil(
-                        context, 'home', (route) => route == null);
+                  context, 'home', (route) => route == null);
             }
           }
         },
@@ -317,6 +303,7 @@ class _LoginViewState extends State<LoginView> {
             child: TextFormField(
           //controller: _controller,
           style: TextStyle(color: Colors.black),
+          obscureText: true,
           decoration: InputDecoration(
             hintText: 'Please enter your code',
             hintStyle: TextStyle(color: Color(0xffadadad), fontSize: 12.0),
@@ -331,20 +318,34 @@ class _LoginViewState extends State<LoginView> {
               ),
               padding: EdgeInsets.fromLTRB(0.0, 14.0, 0.0, 14.0)),
           onTap: (_seconds == countdown)
-              ? () {
+              ? () async {
                   if (_formKey.currentState.validate()) {
                     //获取验证码
-                    _startTimer();
-                    inkWellStyle = _unavailableStyle;
-                    _verifyStr = '已发送$_seconds' + 's';
-                    setState(() {});
-                    //widget.onTapCallback();
+                    if (await getVerifyCode()) {
+                      _startTimer();
+                      inkWellStyle = _unavailableStyle;
+                      _verifyStr = '已发送$_seconds' + 's';
+                      setState(() {});
+                    }
                   }
                 }
               : null,
         ),
       ],
     );
+  }
+
+  Future<bool> getVerifyCode() async {
+    var url = 'code/sms?mobile=$_phone';
+    List hears = [
+      {'name': 'deviceId', 'value': '008'}
+    ];
+    String result = await ECHttp.getData(url, hears);
+    //= 执行登录方法
+    if (result != null) {
+      return true;
+    }
+    return false;
   }
 
   ///启动倒计时计时器

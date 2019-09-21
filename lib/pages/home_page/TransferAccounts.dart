@@ -52,7 +52,7 @@ class _TransferAccountsState extends State<TransferAccounts> {
         onPressed: () {
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (BuildContext context) {
-            return TransferAccountsConfirm();
+            return TransferAccountsConfirm(cardId);
           }));
         },
         shape: RoundedRectangleBorder(
@@ -61,6 +61,8 @@ class _TransferAccountsState extends State<TransferAccounts> {
       ),
     );
   }
+
+  var cardId = '';
 
   //手机号登录文本框
   buildPhoneTextField() {
@@ -72,6 +74,9 @@ class _TransferAccountsState extends State<TransferAccounts> {
             Expanded(
                 child: TextField(
               //controller: _controller,
+              onChanged: (val) {
+                cardId = val;
+              },
               style: TextStyle(color: Colors.black),
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.all(15.0),

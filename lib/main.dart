@@ -19,39 +19,39 @@ import 'pages/home_page/RechargePage.dart';
 import 'pages/home_page/TransferAccounts.dart';
 import 'pages/home_page/VirtualCard.dart';
 import 'pages/login_register/loginView.dart';
-import 'pages/login_register/registerView.dart';
 
 main() async {
+  runApp(MyApp(true));
+  SystemUiOverlayStyle systemUiOverlayStyle = SystemUiOverlayStyle(
+    systemNavigationBarColor: Color(0xFF000000),
+    systemNavigationBarDividerColor: null,
+    statusBarColor: Colors.transparent,
+    systemNavigationBarIconBrightness: Brightness.light,
+    statusBarIconBrightness: Brightness.dark,
+    statusBarBrightness: Brightness.light,
+  );
+  SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
   //是否近期成功登录过
-  String url = await Filehelper.getAppdataUrl();
+  /*String url = await Filehelper.getAppdataUrl();
   File token = new File('$url/$accessTokenName');
   bool isNeedLogin = true;
   bool isExists = await token.exists();
   if (isExists) {
     token.readAsString().then((content) {
-      eAccountData.accessToken = content;
+      eUserInfo.accessToken = content;
       toLoginByToken().then((res) {
         if (res) {
           isNeedLogin = false;
         } else {
-          eAccountData.accessToken = null;
+          eUserInfo.accessToken = null;
         }
         ;
         runApp(MyApp(isNeedLogin));
       });
     });
   } else {
-    runApp(MyApp(isNeedLogin));
-    SystemUiOverlayStyle systemUiOverlayStyle = SystemUiOverlayStyle(
-      systemNavigationBarColor: Color(0xFF000000),
-      systemNavigationBarDividerColor: null,
-      statusBarColor: Colors.transparent,
-      systemNavigationBarIconBrightness: Brightness.light,
-      statusBarIconBrightness: Brightness.dark,
-      statusBarBrightness: Brightness.light,
-    );
-    SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
-  }
+    
+  }*/
 }
 
 class MyApp extends StatelessWidget {
@@ -67,7 +67,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           primaryColor: Color(0xffc74f3a), accentColor: Colors.white), //设置为黑色主题
       home: _login
-          ? LoginView()//RegisterView()
+          ? LoginView() //RegisterView()
           : Index(), //,//BottomMenu(),//这个类在，bottom_menu.dart  中定义。LoginView()
       routes: <String, WidgetBuilder>{
         'loginPage': (_) => LoginView(),
