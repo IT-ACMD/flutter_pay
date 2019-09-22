@@ -1,6 +1,7 @@
 //这是HomeView类的控制页
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_app/tools/ECMessage.dart';
 import 'package:flutter_app/widget/AppTitleBar.dart';
 import 'package:flutter_app/widget/title_barA.dart';
 
@@ -124,7 +125,10 @@ class _HomeViewState extends State<HomeView>
                     .push(MaterialPageRoute(builder: (BuildContext context) {
                   return QRCodePage();
                 }));
-              } else if (i == 1) {}
+              } else if (i == 1) {
+                //showAlertDialog(context);
+                showAlertDialog(this.context, '正在转账中,请稍后。。。');
+              }
             },
           ));
         }),

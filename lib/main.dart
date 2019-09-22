@@ -7,6 +7,7 @@ import 'package:flutter_app/tools/Filehelper.dart';
 //引入自定义的其他页面文件
 import 'config.dart';
 import 'data/dataCenter.dart';
+import 'pages/home_page/AccountBalance.dart';
 import 'pages/home_page/AccountPage.dart';
 import 'pages/home_page/CashWithDrawal.dart';
 import 'pages/home_page/CashWithDrawalBank.dart';
@@ -14,8 +15,12 @@ import 'pages/home_page/ContactUs.dart';
 import 'pages/home_page/ExchangeRemittance.dart';
 import 'pages/home_page/Index.dart';
 import 'pages/home_page/MinedPage.dart';
+import 'pages/home_page/MyBankCard.dart';
+import 'pages/home_page/MyCardBag.dart';
+import 'pages/home_page/MySetUp.dart';
 import 'pages/home_page/RechargeDtod.dart';
 import 'pages/home_page/RechargePage.dart';
+import 'pages/home_page/SetUpMessage.dart';
 import 'pages/home_page/TransferAccounts.dart';
 import 'pages/home_page/VirtualCard.dart';
 import 'pages/login_register/loginView.dart';
@@ -82,6 +87,11 @@ class MyApp extends StatelessWidget {
         '联系我们': (_) => ContactUs(),
         '提现': (_) => CashWithDrawal(),
         '提现银行卡': (_) => CashWithDrawalBank(),
+        '账户余额': (_) => AccountBalance(),
+        '我的卡包': (_) => MyCardBag(),
+        '我的设置': (_) => MySetUp(),
+        '我的银行卡': (_) => MyBankCard(),
+        '消息接收': (_) => SetUpMessage(),
       },
     );
   }

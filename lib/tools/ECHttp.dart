@@ -16,8 +16,7 @@ class ECHttp {
       //请求路径
       var request = await httpClient.getUrl(Uri.parse('$eServiceUrl$url'));
       //添加请求头
-      for(int i = 0; i < list.length; i++)
-      {
+      for (int i = 0; i < list.length; i++) {
         request.headers.add(list[i]['name'], list[i]['value']);
       }
       //返回值
@@ -44,10 +43,12 @@ class ECHttp {
     print('------postData--------');
     var result;
     HttpClient httpClient = new HttpClient();
-    HttpClientRequest request = await httpClient.postUrl(Uri.parse('$eServiceUrl$url'));
+    HttpClientRequest request =
+        await httpClient.postUrl(Uri.parse('$eServiceUrl$url'));
 
     // 设置请求头
-    request.headers.set(HttpHeaders.contentTypeHeader, 'application/x-www-form-urlencoded');
+    request.headers.set(
+        HttpHeaders.contentTypeHeader, 'application/x-www-form-urlencoded');
     var token = getToken();
     request.headers.set(HttpHeaders.authorizationHeader, token);
     request.headers.add('deviceId', '008');
@@ -70,12 +71,12 @@ class ECHttp {
     return result;
   }
 
-  
   static postDataJson(String url, Map map) async {
     print('------postDataJson--------');
     var result;
     HttpClient httpClient = new HttpClient();
-    HttpClientRequest request = await httpClient.postUrl(Uri.parse('$eServiceUrl$url'));
+    HttpClientRequest request =
+        await httpClient.postUrl(Uri.parse('$eServiceUrl$url'));
 
     // 设置请求头
     request.headers.set(HttpHeaders.contentTypeHeader, 'application/json');
@@ -100,3 +101,13 @@ class ECHttp {
     return result;
   }
 }
+
+/*.then((data) {
+        
+      }).catchError((e) {
+        //执行失败会走到这里
+        showMessageOne(context, 'System error, please try again later!');
+      }).whenComplete(() {
+        //无论如何走这里
+        showMessageOne(context, 'System error, please try again later!');
+      });*/

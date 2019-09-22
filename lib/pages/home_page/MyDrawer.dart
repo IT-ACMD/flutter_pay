@@ -37,6 +37,20 @@ class MyDrawer extends StatelessWidget {
     'images/contact_us_s.png',
     'images/my_thinthin_s.png'
   ];
+
+  // 菜单文本跳转的页面
+  List menuLink = [
+    '转账',
+    '充值',
+    '提现',
+    '兑汇',
+    '虚拟卡',
+    '账户',
+    '',
+    '联系我们',
+    '我的'
+  ];
+
   // 菜单文本的样式
   TextStyle menuStyle = TextStyle(
     fontSize: 15.0,
@@ -149,7 +163,9 @@ class MyDrawer extends StatelessWidget {
 
     return InkWell(
       child: listItemContent,
-      onTap: () {},
+      onTap: () {
+        Navigator.of(context).pushNamed(menuLink[index]);
+      },
     );
   }
 }

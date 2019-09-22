@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/data/dataCenter.dart';
 import 'package:flutter_app/tools/ECHttp.dart';
+import 'package:flutter_app/tools/ECMessage.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'loginView.dart';
@@ -61,7 +62,7 @@ class _RegisterViewState extends State<RegisterView> {
               color: Color(0xffeeeeee),
               height: 1.0,
             ),
-            buildLoginButton(context),
+            buildRegisterButton(context),
           ],
         ),
       ),
@@ -78,64 +79,7 @@ class _RegisterViewState extends State<RegisterView> {
     );
   }
 
-  Align buildRegisterText(BuildContext context) {
-    return Align(
-        alignment: Alignment.center,
-        child: Padding(
-          padding: const EdgeInsets.only(top: 10.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text("没有账号？"),
-              GestureDetector(
-                child: Text(
-                  "点击注册",
-                  style: TextStyle(color: Colors.green),
-                ),
-                onTap: () {
-                  //TODO跳转到注册页面
-                  print("去注册");
-                  Navigator.pop(context);
-                },
-              )
-            ],
-          ),
-        ));
-  }
-
-  DefaultTextStyle buildUserProtocolText() {
-    return DefaultTextStyle(
-        style: TextStyle(color: Colors.white, fontSize: 11.0),
-        textAlign: TextAlign.left,
-        child: Text.rich(TextSpan(children: <TextSpan>[
-          TextSpan(
-            text: '注册即同意 心电 ',
-          ),
-          TextSpan(
-            text: '用户协议',
-            style: TextStyle(
-              decoration: TextDecoration.underline,
-              decorationColor: Colors.white,
-            ),
-          ),
-          TextSpan(
-            text: ' 和 ',
-          ),
-          TextSpan(
-            text: '隐私政策',
-            style: TextStyle(
-              color: Colors.white,
-              decoration: TextDecoration.underline,
-              decorationColor: Colors.white,
-            ),
-          )
-        ])
-            //'    ',
-            //style: TextStyle(color: Colors.white, fontSize: 11.0),
-            ));
-  }
-
-  buildLoginButton(BuildContext context) {
+  buildRegisterButton(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(top: 34.0),
       height: ScreenUtil().setHeight(140.0), //45 * 420/160
@@ -149,26 +93,13 @@ class _RegisterViewState extends State<RegisterView> {
         color: Color(0xffC74F3A),
         onPressed: () async {
           if (eIsTest) {
-            /*Navigator.pushNamedAndRemoveUntil(
-                context, 'home', (route) => route == null);*/
             Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(builder: (BuildContext context) {
               return LoginView();
             }), (route) => route == null);
           }
           if (_formKey.currentState.validate()) {
-            var url = 'user/user/insert';
-            Map map = {"phone": _phone};
-            var result = await ECHttp.postDataJson(url, map);
-            if (result != null) {
-              var jsonData = json.decode(result);
-              if (jsonData['success']) {
-                Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (BuildContext context) {
-                  return LoginView();
-                }), (route) => route == null);
-              }
-            }
+            toRegister();
           }
         },
         shape: RoundedRectangleBorder(
@@ -176,6 +107,29 @@ class _RegisterViewState extends State<RegisterView> {
                 8.0)), //StadiumBorder(side: BorderSide()),
       ),
     );
+  }
+
+  toRegister() {
+    var url = 'user/user/insert';
+    Map map = {"phone": _phone};
+    ECHttp.postDataJson(url, map).then((result) {
+      if (result != null) {
+        var jsonData = json.decode(result);
+        if (jsonData['success'] && jsonData['data'].indexOf('成功') != -1) {
+          showMessageOne(context, 'Registration Successful!').then((res) {
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (BuildContext context) {
+              return LoginView();
+            }), (route) => route == null);
+          });
+        } else if (jsonData['data'].indexOf('已存在') != -1) {
+          showMessageOne(context, 'The user already exists!');
+        }
+      }
+    }).catchError((e) {
+      //执行失败会走到这里
+      showMessageOne(context, 'Register error, please try again later!');
+    });
   }
 
   Padding buildForgetPasswordText(BuildContext context) {
@@ -245,7 +199,6 @@ class _RegisterViewState extends State<RegisterView> {
               return '请输入正确的手机号';
             }
           },
-        
         )),
       ],
     );

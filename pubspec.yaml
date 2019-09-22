@@ -27,6 +27,8 @@ dependencies:
   sharesdk: ^1.1.8
   date_format: ^1.0.6
   path_provider: ^1.3.0
+  pin_input_text_field: ^2.0.0
+  crypto: ^2.1.3
  # qrscan: ^0.2.17
 
 
@@ -112,6 +114,9 @@ flutter:
     - images/arrow_right.png
     - images/radio.png
     - images/rmb.png
+    - images/red_envelopes.png
+    - images/coupon.png
+    
     
 
     

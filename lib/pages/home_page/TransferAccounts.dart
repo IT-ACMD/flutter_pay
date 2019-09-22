@@ -11,6 +11,8 @@ class TransferAccounts extends StatefulWidget {
 }
 
 class _TransferAccountsState extends State<TransferAccounts> {
+  final _formKey = GlobalKey<FormState>();
+
   @override
   void initState() {
     super.initState();
@@ -23,15 +25,17 @@ class _TransferAccountsState extends State<TransferAccounts> {
           child: AppTitleBar(title: 'TinhTinh Transfer accounts'),
         ),
         body: SingleChildScrollView(
-            child: Container(
-                color: Color(0xffF8F8F8),
-                child: Column(
-                  children: <Widget>[
-                    buildPhoneTextField(),
-                    buildHintText(),
-                    buildNextButton(),
-                  ],
-                ))),
+            child: Form(
+                key: _formKey,
+                child: Container(
+                    color: Color(0xffF8F8F8),
+                    child: Column(
+                      children: <Widget>[
+                        buildPhoneTextField(),
+                        buildHintText(),
+                        buildNextButton(),
+                      ],
+                    )))),
         drawer: Drawer(
           child: MyDrawer(),
         ));
@@ -50,10 +54,12 @@ class _TransferAccountsState extends State<TransferAccounts> {
             ),
         color: Color(0xffC74F3A),
         onPressed: () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (BuildContext context) {
-            return TransferAccountsConfirm(cardId);
-          }));
+          if (_formKey.currentState.validate()) {
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (BuildContext context) {
+              return TransferAccountsConfirm(cardId);
+            }));
+          }
         },
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(
@@ -72,9 +78,9 @@ class _TransferAccountsState extends State<TransferAccounts> {
         child: Row(
           children: <Widget>[
             Expanded(
-                child: TextField(
+                child: TextFormField(
               //controller: _controller,
-              onChanged: (val) {
+              onFieldSubmitted: (val) {
                 cardId = val;
               },
               style: TextStyle(color: Colors.black),
@@ -84,6 +90,12 @@ class _TransferAccountsState extends State<TransferAccounts> {
                 hintStyle: TextStyle(color: Color(0xff222222), fontSize: 16.0),
                 border: InputBorder.none,
               ),
+              validator: (String val) {
+                var emailReg = RegExp(r'^\d{1,}$');
+                if (!emailReg.hasMatch(val)) {
+                  return 'Please enter the card number of the transferor';
+                }
+              },
             )),
             Padding(
                 child: Image.asset(

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/data/dataCenter.dart';
 import 'package:flutter_app/pages/login_register/RegisterView.dart';
 import 'package:flutter_app/tools/ECHttp.dart';
+import 'package:flutter_app/tools/ECMessage.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sharesdk/sharesdk.dart';
 
@@ -90,7 +91,9 @@ class _LoginViewState extends State<LoginView> {
         child: ListView(
           padding: EdgeInsets.symmetric(horizontal: 35.0),
           children: <Widget>[
-            SizedBox(height: 50.0,),
+            SizedBox(
+              height: 50.0,
+            ),
             buildTitle(),
             SizedBox(height: 50.0),
             buildPhoneTextField(),
@@ -226,17 +229,7 @@ class _LoginViewState extends State<LoginView> {
           }
           if (_formKey.currentState.validate()) {
             //= 执行登录方法
-            var url = 'authentication/mobile';
-            String params = 'mobile=$_phone'
-                '&smsCode=1234';
-            String result = await ECHttp.postData(url, params);
-            if (result != null && result.length > 0) {
-              var object = json.decode(result);
-              eUserInfo.accessToken = object['access_token'];
-              afterLogin();
-              Navigator.pushNamedAndRemoveUntil(
-                  context, 'home', (route) => route == null);
-            }
+            toLogin();
           }
         },
         shape: RoundedRectangleBorder(
@@ -244,6 +237,31 @@ class _LoginViewState extends State<LoginView> {
                 8.0)), //StadiumBorder(side: BorderSide()),
       ),
     );
+  }
+
+  //去登陆
+  toLogin() {
+    if (_verifyStr == 'Get Verify Code') {
+      return showMessageOne(context, 'Please get the verification code first!');
+    }
+    var url = 'authentication/mobile';
+    String params = 'mobile=$_phone'
+        '&smsCode=1234';
+    ECHttp.postData(url, params).then((result) {
+      if (result != null && result.length > 0) {
+        var object = json.decode(result);
+        eUserInfo.accessToken = object['access_token'];
+        afterLogin();
+        Navigator.pushNamedAndRemoveUntil(
+            context, 'home', (route) => route == null);
+      }
+    }).catchError((e) {
+      //执行失败会走到这里
+      showMessageOne(context, 'Login error, please try again later!');
+    }).whenComplete(() {
+      //无论如何走这里
+      //showMessageOne(context, 'The request has timed out, please try again later!');
+    });
   }
 
   Padding buildForgetPasswordText(BuildContext context) {
@@ -309,6 +327,12 @@ class _LoginViewState extends State<LoginView> {
             hintStyle: TextStyle(color: Color(0xffadadad), fontSize: 12.0),
             border: InputBorder.none,
           ),
+          onFieldSubmitted: (String value) {
+            var emailReg = RegExp(r'^\d{4}$');
+            if (!emailReg.hasMatch(value)) {
+              return 'Please enter a 4-bit code';
+            }
+          },
         )),
         GestureDetector(
           child: Padding(
@@ -321,12 +345,7 @@ class _LoginViewState extends State<LoginView> {
               ? () async {
                   if (_formKey.currentState.validate()) {
                     //获取验证码
-                    if (await getVerifyCode()) {
-                      _startTimer();
-                      inkWellStyle = _unavailableStyle;
-                      _verifyStr = '已发送$_seconds' + 's';
-                      setState(() {});
-                    }
+                    toGetVerifyCode();
                   }
                 }
               : null,
@@ -335,17 +354,29 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 
-  Future<bool> getVerifyCode() async {
+  //去获取验证码
+  toGetVerifyCode() {
     var url = 'code/sms?mobile=$_phone';
     List hears = [
       {'name': 'deviceId', 'value': '008'}
     ];
-    String result = await ECHttp.getData(url, hears);
-    //= 执行登录方法
-    if (result != null) {
-      return true;
-    }
-    return false;
+    ECHttp.getData(url, hears).then((result) {
+      if (result != null) {
+        _startTimer();
+        inkWellStyle = _unavailableStyle;
+        _verifyStr = '已发送$_seconds' + 's';
+        setState(() {});
+      } else {
+        showMessageOne(
+            context, 'This account does not exist. Please register first!');
+      }
+    }).catchError((e) {
+      //执行失败会走到这里
+      showMessageOne(context, 'Get verify vode error, please try again later!');
+    }).whenComplete(() {
+      //无论如何走这里
+      //showMessageOne(context, 'The request has timed out, please try again later!');
+    });
   }
 
   ///启动倒计时计时器
