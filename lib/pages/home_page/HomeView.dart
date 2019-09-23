@@ -1,6 +1,11 @@
 //这是HomeView类的控制页
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_app/data/dataCenter.dart';
+import 'package:flutter_app/pages/home_page/SettingPaymentPwd.dart';
+import 'package:flutter_app/tools/ECHttp.dart';
 import 'package:flutter_app/tools/ECMessage.dart';
 import 'package:flutter_app/widget/AppTitleBar.dart';
 import 'package:flutter_app/widget/title_barA.dart';
@@ -31,7 +36,7 @@ class _HomeViewState extends State<HomeView>
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBarA(
-          child: AppTitleBar(title: 'TinhTinh Pay'),
+          child: AppTitleBarH(title: 'TinhTinh Pay'),
         ),
         body: SingleChildScrollView(
             child: Column(
@@ -125,10 +130,7 @@ class _HomeViewState extends State<HomeView>
                     .push(MaterialPageRoute(builder: (BuildContext context) {
                   return QRCodePage();
                 }));
-              } else if (i == 1) {
-                //showAlertDialog(context);
-                showAlertDialog(this.context, '正在转账中,请稍后。。。');
-              }
+              } else if (i == 1) {}
             },
           ));
         }),
@@ -219,7 +221,35 @@ class _HomeViewState extends State<HomeView>
                           ],
                         )),
                     onTap: () {
-                      Navigator.of(context).pushNamed(infos.linkUrl);
+                      List hears = [
+                        {
+                          'name': 'authorization',
+                          'value': 'bearer ${eUserInfo.accessToken}'
+                        }
+                      ];
+                      ECHttp.getData('account/yzPassword', hears).then((res) {
+                        if (res != null && res.length > 0) {
+                          var object1 = json.decode(res);
+                          if (object1['success'] &&
+                              object1['data'] != null &&
+                              object1['data'] == true) {
+                            Navigator.of(context).pushNamed(infos.linkUrl);
+                          } else {
+                            String content =
+                                'You have not set the payment password, please go to set it first.';
+                            showMessageTwo(context, content, 'remind', 'CANCEL',
+                                    'GO TO SET')
+                                .then((res) {
+                              if (res) {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (BuildContext context) {
+                                  return SettingPaymentPwd();
+                                }));
+                              }
+                            });
+                          }
+                        }
+                      });
                     },
                   );
                 },

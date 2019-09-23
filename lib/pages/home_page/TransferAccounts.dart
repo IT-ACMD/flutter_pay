@@ -1,6 +1,10 @@
 //这是转账页面
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app/pages/home_page/TransferAccountsConfirm.dart';
+import 'package:flutter_app/tools/ECHttp.dart';
+import 'package:flutter_app/tools/ECMessage.dart';
 import 'package:flutter_app/widget/AppTitleBar.dart';
 import 'package:flutter_app/widget/title_barA.dart';
 
@@ -12,10 +16,16 @@ class TransferAccounts extends StatefulWidget {
 
 class _TransferAccountsState extends State<TransferAccounts> {
   final _formKey = GlobalKey<FormState>();
+  TextEditingController _controller = TextEditingController();
 
   @override
   void initState() {
     super.initState();
+    _controller.addListener(onChange);
+  }
+
+  void onChange() {
+    cardId = _controller.text;
   }
 
   @override
@@ -55,15 +65,29 @@ class _TransferAccountsState extends State<TransferAccounts> {
         color: Color(0xffC74F3A),
         onPressed: () {
           if (_formKey.currentState.validate()) {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (BuildContext context) {
-              return TransferAccountsConfirm(cardId);
-            }));
+            Map map = {'cardId': cardId};
+            ECHttp.postDataJson('account/bdAccount', map).then((data) {
+              if (data != null && data.length > 0) {
+                var jsonData = json.decode(data);
+                String str = jsonData['data'];
+                if (str.indexOf('没有') == -1) {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (BuildContext context) {
+                    return TransferAccountsConfirm(cardId);
+                  }));
+                } else {
+                  showMessageOne(context,
+                          'There is no account card number, please confirm whether the account exists')
+                      .then((res) {
+                    //_controller.text = '';
+                    //setState(() {});
+                  });
+                }
+              }
+            });
           }
         },
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(
-                4.0)), //StadiumBorder(side: BorderSide()),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.0)),
       ),
     );
   }
@@ -79,10 +103,7 @@ class _TransferAccountsState extends State<TransferAccounts> {
           children: <Widget>[
             Expanded(
                 child: TextFormField(
-              //controller: _controller,
-              onFieldSubmitted: (val) {
-                cardId = val;
-              },
+              controller: _controller,
               style: TextStyle(color: Colors.black),
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.all(15.0),

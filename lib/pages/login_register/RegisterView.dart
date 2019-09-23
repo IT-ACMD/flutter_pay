@@ -62,6 +62,12 @@ class _RegisterViewState extends State<RegisterView> {
               color: Color(0xffeeeeee),
               height: 1.0,
             ),
+            SizedBox(height: 30.0),
+            buildPwdTextField(),
+            Container(
+              color: Color(0xffeeeeee),
+              height: 1.0,
+            ),
             buildRegisterButton(context),
           ],
         ),
@@ -179,7 +185,7 @@ class _RegisterViewState extends State<RegisterView> {
       children: <Widget>[
         Padding(
             child: Text(
-              '+86',
+              '+855',
               style: TextStyle(fontSize: 16.0, color: Color(0xff222222)),
             ),
             padding: EdgeInsets.fromLTRB(0.0, 14.0, 40.0, 14.0)),
@@ -197,6 +203,30 @@ class _RegisterViewState extends State<RegisterView> {
                 r'^((13[0-9])|(14[0-9])|(15[0-9])|(16[0-9])|(17[0-9])|(18[0-9])|(19[0-9]))\d{8}$');
             if (!emailReg.hasMatch(value)) {
               return '请输入正确的手机号';
+            }
+          },
+        )),
+      ],
+    );
+  }
+
+  buildPwdTextField() {
+    return Row(
+      children: <Widget>[
+        Expanded(
+            child: TextFormField(
+          //controller: _controller,
+          style: TextStyle(color: Colors.black),
+          obscureText: true,
+          decoration: InputDecoration(
+            hintText: 'new passworld',
+            hintStyle: TextStyle(color: Color(0xffadadad), fontSize: 16.0),
+            border: InputBorder.none,
+          ),
+          onFieldSubmitted: (String value) {
+            var emailReg = RegExp(r'^\d{4}$');
+            if (!emailReg.hasMatch(value)) {
+              return 'Please enter a 4-bit code';
             }
           },
         )),

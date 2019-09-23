@@ -11,7 +11,7 @@ import 'package:sharesdk/sharesdk.dart';
 
 /// 墨水瓶（`InkWell`）可用时使用的字体样式。
 final TextStyle _availableStyle = TextStyle(
-  color: const Color(0xFFC74F3A),
+  color: const Color(0xffFF9481),
 );
 
 /// 墨水瓶（`InkWell`）不可用时使用的样式。
@@ -84,8 +84,15 @@ class _LoginViewState extends State<LoginView> {
     //设置宽750 高1334，根据系统字体进行缩放
     //ScreenUtil.instance = ScreenUtil(width: 1080, height: 1920, allowFontScaling: true)..init(context);
     return Scaffold(
-        body: Material(
-      color: Colors.white,
+        body: Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('images/bg.png'),
+          fit: BoxFit.cover,
+          colorFilter: ColorFilter.mode(
+              Colors.black.withOpacity(0.5), BlendMode.srcOver),
+        ),
+      ),
       child: Form(
         key: _formKey,
         child: ListView(
@@ -107,6 +114,12 @@ class _LoginViewState extends State<LoginView> {
               color: Color(0xffeeeeee),
               height: 1.0,
             ),
+            SizedBox(height: 30.0),
+            buildPwdTextField(),
+            Container(
+              color: Color(0xffeeeeee),
+              height: 1.0,
+            ),
             buildLoginButton(context),
             buildRegisterButton(),
           ],
@@ -123,12 +136,12 @@ class _LoginViewState extends State<LoginView> {
       child: OutlineButton(
         child: Text('Register',
             style: TextStyle(
-                color: Colors.black,
+                color: Colors.white,
                 fontSize: 18.0,
                 fontWeight: FontWeight.w600)),
-        color: Colors.black,
+        color: Colors.white,
         highlightedBorderColor: Colors.white,
-        borderSide: BorderSide(width: 2.0, color: Colors.black),
+        borderSide: BorderSide(width: 1.0, color: Colors.white),
         onPressed: () {
           Navigator.push(context,
               MaterialPageRoute(builder: (BuildContext context) {
@@ -286,19 +299,20 @@ class _LoginViewState extends State<LoginView> {
   buildPhoneTextField() {
     return Row(
       children: <Widget>[
+        Text(
+          '+855',
+          style: TextStyle(fontSize: 16.0, color: Colors.white),
+        ),
         Padding(
-            child: Text(
-              '+86',
-              style: TextStyle(fontSize: 16.0, color: Color(0xff222222)),
-            ),
-            padding: EdgeInsets.fromLTRB(0.0, 14.0, 40.0, 14.0)),
+            child: Image.asset('images/arrow_right.png', color: Colors.white),
+            padding: EdgeInsets.fromLTRB(15.0, 14.0, 20.0, 14.0)),
         Expanded(
             child: TextFormField(
           controller: _controller,
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.white),
           decoration: InputDecoration(
-            hintText: 'Please enter your cell phone number',
-            hintStyle: TextStyle(color: Color(0xffadadad), fontSize: 12.0),
+            hintText: 'Phone',//'Please enter your cell phone number',
+            hintStyle: TextStyle(color: Colors.white, fontSize: 16.0),
             border: InputBorder.none,
           ),
           validator: (String value) {
@@ -313,6 +327,46 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 
+  static IconData visible = Icons.visibility_off;
+  static IconData unVisible = Icons.visibility;
+  IconData selIcon = visible;
+
+  buildPwdTextField() {
+    return Row(
+      children: <Widget>[
+        Expanded(
+            child: TextFormField(
+          //controller: _controller,
+          style: TextStyle(color: Colors.white),
+          obscureText: selIcon == visible ? true : false,
+          decoration: InputDecoration(
+            hintText: 'passworld',
+            hintStyle: TextStyle(color: Colors.white, fontSize: 16.0),
+            border: InputBorder.none,
+          ),
+          onFieldSubmitted: (String value) {
+            var emailReg = RegExp(r'^\d{4}$');
+            if (!emailReg.hasMatch(value)) {
+              return 'Please enter a 4-bit code';
+            }
+          },
+        )),
+        GestureDetector(
+          child: Padding(
+              child: Icon(
+                selIcon,
+                color: Colors.white,
+              ),
+              padding: EdgeInsets.fromLTRB(0.0, 14.0, 0.0, 14.0)),
+          onTap: () {
+            selIcon = selIcon == visible ? unVisible : visible;
+            setState(() {});
+          },
+        ),
+      ],
+    );
+  }
+
   //验证码文本框
   buildCodeTextField() {
     return Row(
@@ -320,11 +374,11 @@ class _LoginViewState extends State<LoginView> {
         Expanded(
             child: TextFormField(
           //controller: _controller,
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.white),
           obscureText: true,
           decoration: InputDecoration(
-            hintText: 'Please enter your code',
-            hintStyle: TextStyle(color: Color(0xffadadad), fontSize: 12.0),
+            hintText: 'code',//'Please enter your code',
+            hintStyle: TextStyle(color: Colors.white, fontSize: 16.0),
             border: InputBorder.none,
           ),
           onFieldSubmitted: (String value) {
@@ -411,7 +465,7 @@ class _LoginViewState extends State<LoginView> {
       padding: EdgeInsets.only(top: 40.0),
       child: Text(
         'Sign in',
-        style: TextStyle(fontSize: 26.0, color: Colors.black),
+        style: TextStyle(fontSize: 26.0, color: Colors.white),
       ),
     );
   }

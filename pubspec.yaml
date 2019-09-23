@@ -112,10 +112,13 @@ flutter:
     - images/cash_to_bank_card.png
     - images/card_number.png
     - images/arrow_right.png
+    - images/arrow_left.png
     - images/radio.png
     - images/rmb.png
     - images/red_envelopes.png
     - images/coupon.png
+    - images/bg.png
+
     
     
 
