@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_app/data/dataCenter.dart';
 import 'package:flutter_app/pages/login_register/RegisterView.dart';
 import 'package:flutter_app/tools/ECHttp.dart';
@@ -26,9 +27,8 @@ class LoginView extends StatefulWidget {
 
 class _LoginViewState extends State<LoginView> {
   final _formKey = GlobalKey<FormState>();
-  String _email, _password, _phone;
+  String _phoenCode, _password, _phone;
   bool isObscure = true;
-  Color _eyeColor;
   List _loginMethod = [
     {
       'title': "微信",
@@ -57,6 +57,7 @@ class _LoginViewState extends State<LoginView> {
   String _verifyStr = 'Get Verify Code';
 
   TextEditingController _controller = new TextEditingController();
+  TextEditingController _controllerp = new TextEditingController();
 
   @override
   void initState() {
@@ -69,12 +70,19 @@ class _LoginViewState extends State<LoginView> {
     //注册
     ShareSDK.regist(register);
     _controller.addListener(onChange);
+    _controllerp.addListener(onChangep);
+    _phoenCode = '+855';
   }
 
   void onChange() {
     String text = _controller.text;
     _phone = text;
     eUserInfo.phone = text;
+  }
+
+  void onChangep() {
+    String text = _controllerp.text;
+    _password = text;
   }
 
   @override
@@ -257,6 +265,39 @@ class _LoginViewState extends State<LoginView> {
     if (_verifyStr == 'Get Verify Code') {
       return showMessageOne(context, 'Please get the verification code first!');
     }
+
+    if (_phone == null) {
+      return showMessageOne(context, '_phone is null');
+    }
+
+    if (_phoenCode == null) {
+      return showMessageOne(context, '_phoenCode is null');
+    }
+
+    if (_password == null) {
+      return showMessageOne(context, '_password is null');
+    }
+
+    if (_password.length < 6) {
+      return showMessageOne(context, 'Please enter your 6-digit password!');
+    }
+
+    var url = 'user/user/login';
+    Map map = {'phone': _phone, 'pwd': _password, 'phonecode': _phoenCode};
+    ECHttp.postDataJson(url, map).then((result) {
+      if (result != null) {
+        var jsonData = json.decode(result);
+        if (jsonData['success']) {
+          //去获取token
+          toGetToken();
+        } else {
+          showMessageOne(context, jsonData['data']);
+        }
+      }
+    });
+  }
+
+  toGetToken() {
     var url = 'authentication/mobile';
     String params = 'mobile=$_phone'
         '&smsCode=1234';
@@ -271,9 +312,6 @@ class _LoginViewState extends State<LoginView> {
     }).catchError((e) {
       //执行失败会走到这里
       showMessageOne(context, 'Login error, please try again later!');
-    }).whenComplete(() {
-      //无论如何走这里
-      //showMessageOne(context, 'The request has timed out, please try again later!');
     });
   }
 
@@ -300,7 +338,7 @@ class _LoginViewState extends State<LoginView> {
     return Row(
       children: <Widget>[
         Text(
-          '+855',
+          _phoenCode,
           style: TextStyle(fontSize: 16.0, color: Colors.white),
         ),
         Padding(
@@ -311,15 +349,16 @@ class _LoginViewState extends State<LoginView> {
           controller: _controller,
           style: TextStyle(color: Colors.white),
           decoration: InputDecoration(
-            hintText: 'Phone',//'Please enter your cell phone number',
-            hintStyle: TextStyle(color: Colors.white, fontSize: 16.0),
+            hintText: 'Phone', //'Please enter your cell phone number',
+            hintStyle: TextStyle(color: Color(0xffADADAD), fontSize: 16.0),
             border: InputBorder.none,
+            errorStyle: TextStyle(color: Color(0xffFF9481), fontSize: 12.0),
           ),
           validator: (String value) {
             var emailReg = RegExp(
                 r'^((13[0-9])|(14[0-9])|(15[0-9])|(16[0-9])|(17[0-9])|(18[0-9])|(19[0-9]))\d{8}$');
             if (!emailReg.hasMatch(value)) {
-              return '请输入正确的手机号';
+              return 'Please enter the correct phone number';
             }
           },
         )),
@@ -335,21 +374,16 @@ class _LoginViewState extends State<LoginView> {
     return Row(
       children: <Widget>[
         Expanded(
-            child: TextFormField(
-          //controller: _controller,
+            child: TextField(
+          controller: _controllerp,
+          inputFormatters: [LengthLimitingTextInputFormatter(6)],
           style: TextStyle(color: Colors.white),
           obscureText: selIcon == visible ? true : false,
           decoration: InputDecoration(
             hintText: 'passworld',
-            hintStyle: TextStyle(color: Colors.white, fontSize: 16.0),
+            hintStyle: TextStyle(color: Color(0xffADADAD), fontSize: 16.0),
             border: InputBorder.none,
           ),
-          onFieldSubmitted: (String value) {
-            var emailReg = RegExp(r'^\d{4}$');
-            if (!emailReg.hasMatch(value)) {
-              return 'Please enter a 4-bit code';
-            }
-          },
         )),
         GestureDetector(
           child: Padding(
@@ -377,8 +411,8 @@ class _LoginViewState extends State<LoginView> {
           style: TextStyle(color: Colors.white),
           obscureText: true,
           decoration: InputDecoration(
-            hintText: 'code',//'Please enter your code',
-            hintStyle: TextStyle(color: Colors.white, fontSize: 16.0),
+            hintText: 'code', //'Please enter your code',
+            hintStyle: TextStyle(color: Color(0xffADADAD), fontSize: 16.0),
             border: InputBorder.none,
           ),
           onFieldSubmitted: (String value) {

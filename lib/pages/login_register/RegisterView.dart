@@ -15,21 +15,28 @@ class RegisterView extends StatefulWidget {
 
 class _RegisterViewState extends State<RegisterView> {
   final _formKey = GlobalKey<FormState>();
-  String _email, _password, _phone;
+  String _password, _phone, _phoenCode;
   bool isObscure = true;
-  Color _eyeColor;
   TextEditingController _controller = new TextEditingController();
+  TextEditingController _controllerPwd = new TextEditingController();
 
   @override
   void initState() {
     super.initState();
+    _phoenCode = '+855';
     _controller.addListener(onChange);
+    _controllerPwd.addListener(onChangeP);
   }
 
   void onChange() {
     String text = _controller.text;
     _phone = text;
     eUserInfo.phone = text;
+  }
+
+  void onChangeP() {
+    String text = _controllerPwd.text;
+    _password = text;
   }
 
   @override
@@ -47,15 +54,15 @@ class _RegisterViewState extends State<RegisterView> {
           padding: EdgeInsets.symmetric(horizontal: 35.0),
           children: <Widget>[
             SizedBox(
-              height: 50.0,
+              height: 80.0,
             ),
             buildTitle(),
-            SizedBox(height: 50.0),
-            buildPhoneAddress(),
+            SizedBox(height: 20.0),
+            /*buildPhoneAddress(),
             Container(
               color: Color(0xffeeeeee),
               height: 1.0,
-            ),
+            ),*/
             SizedBox(height: 30.0),
             buildPhoneTextField(),
             Container(
@@ -117,7 +124,7 @@ class _RegisterViewState extends State<RegisterView> {
 
   toRegister() {
     var url = 'user/user/insert';
-    Map map = {"phone": _phone};
+    Map map = {"phone": _phone, 'pwd': _password, 'phonecode': _phoenCode};
     ECHttp.postDataJson(url, map).then((result) {
       if (result != null) {
         var jsonData = json.decode(result);
@@ -162,7 +169,7 @@ class _RegisterViewState extends State<RegisterView> {
       children: <Widget>[
         Padding(
             child: Text(
-              'Location of mobile phone number',
+              'Contury', //'Location of mobile phone number',
               style: TextStyle(fontSize: 14.0, color: Color(0xff222222)),
             ),
             padding: EdgeInsets.fromLTRB(0.0, 14.0, 0.0, 14.0)),
@@ -183,6 +190,38 @@ class _RegisterViewState extends State<RegisterView> {
   buildPhoneTextField() {
     return Row(
       children: <Widget>[
+        Text(
+          _phoenCode,
+          style: TextStyle(fontSize: 16.0, color: Color(0xff222222)),
+        ),
+        Padding(
+            child: Image.asset('images/arrow_right.png', color: Colors.black),
+            padding: EdgeInsets.fromLTRB(15.0, 14.0, 20.0, 14.0)),
+        Expanded(
+            child: TextFormField(
+          controller: _controller,
+          style: TextStyle(color: Color(0xff222222)),
+          decoration: InputDecoration(
+            hintText: 'Phone', //'Please enter your cell phone number',
+            hintStyle: TextStyle(color: Color(0xffadadad), fontSize: 16.0),
+            border: InputBorder.none,
+          ),
+          validator: (String value) {
+            var emailReg = RegExp(
+                r'^((13[0-9])|(14[0-9])|(15[0-9])|(16[0-9])|(17[0-9])|(18[0-9])|(19[0-9]))\d{8}$');
+            if (!emailReg.hasMatch(value)) {
+              return '请输入正确的手机号';
+            }
+          },
+        )),
+      ],
+    );
+  }
+
+  //手机号登录文本框
+  buildPhoneTextField1() {
+    return Row(
+      children: <Widget>[
         Padding(
             child: Text(
               '+855',
@@ -194,7 +233,7 @@ class _RegisterViewState extends State<RegisterView> {
           controller: _controller,
           style: TextStyle(color: Colors.black),
           decoration: InputDecoration(
-            hintText: 'Please enter your cell phone number',
+            hintText: 'Phone', //'Please enter your cell phone number',
             hintStyle: TextStyle(color: Color(0xffadadad), fontSize: 16.0),
             border: InputBorder.none,
           ),
@@ -215,7 +254,7 @@ class _RegisterViewState extends State<RegisterView> {
       children: <Widget>[
         Expanded(
             child: TextFormField(
-          //controller: _controller,
+          controller: _controllerPwd,
           style: TextStyle(color: Colors.black),
           obscureText: true,
           decoration: InputDecoration(
@@ -223,10 +262,10 @@ class _RegisterViewState extends State<RegisterView> {
             hintStyle: TextStyle(color: Color(0xffadadad), fontSize: 16.0),
             border: InputBorder.none,
           ),
-          onFieldSubmitted: (String value) {
-            var emailReg = RegExp(r'^\d{4}$');
+          validator: (String value) {
+            var emailReg = RegExp(r'^\d{6}$');
             if (!emailReg.hasMatch(value)) {
-              return 'Please enter a 4-bit code';
+              return 'Please enter a 6-bit code';
             }
           },
         )),

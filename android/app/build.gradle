@@ -25,6 +25,7 @@ apply plugin: 'com.android.application'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 apply from: '../MobSDK.gradle'
 apply plugin: 'com.mob.sdk'
+//apply plugin: 'kotlin-android'
 def keystorePropertiesFile = rootProject.file("key.properties")
 def keystoreProperties = new Properties()
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
@@ -73,4 +74,6 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    //api 'com.google.firebase:firebase-ml-vision-image-label-model:17.0.2'
+    //implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 }

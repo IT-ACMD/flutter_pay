@@ -1,4 +1,5 @@
-buildscript {
+buildscript { 
+    //ext.kotlin_version = '1.2.51'
     repositories {
         google()
         jcenter()
@@ -11,6 +12,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:3.4.1'
         classpath 'com.mob.sdk:MobSDK:2018.0319.1724'
+        //classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 

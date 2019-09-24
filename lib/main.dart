@@ -1,12 +1,6 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_app/pages/login_register/LoginView.dart' as prefix0;
-import 'package:flutter_app/tools/Filehelper.dart';
 //引入自定义的其他页面文件
-import 'config.dart';
-import 'data/dataCenter.dart';
 import 'pages/home_page/AccountBalance.dart';
 import 'pages/home_page/AccountPage.dart';
 import 'pages/home_page/CashWithDrawal.dart';
