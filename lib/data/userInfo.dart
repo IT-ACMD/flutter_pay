@@ -9,6 +9,7 @@ class UserInfo {
   String cardId; //卡号
   String name;
   String age;
+  bool isPayCode = false; //是否有支付密码
 
   UserInfo({
     //@required this.padding,

@@ -337,13 +337,26 @@ class _LoginViewState extends State<LoginView> {
   buildPhoneTextField() {
     return Row(
       children: <Widget>[
-        Text(
-          _phoenCode,
-          style: TextStyle(fontSize: 16.0, color: Colors.white),
+        InkWell(
+          child: Row(
+            children: <Widget>[
+              Text(
+                _phoenCode,
+                style: TextStyle(fontSize: 16.0, color: Colors.white),
+              ),
+              Padding(
+                  child: Image.asset('images/arrow_right.png',
+                      color: Colors.white),
+                  padding: EdgeInsets.fromLTRB(15.0, 14.0, 20.0, 14.0)),
+            ],
+          ),
+          onTap: () {
+            changeRegion(context).then((val) {
+              _phoenCode = val;
+              setState(() {});
+            });
+          },
         ),
-        Padding(
-            child: Image.asset('images/arrow_right.png', color: Colors.white),
-            padding: EdgeInsets.fromLTRB(15.0, 14.0, 20.0, 14.0)),
         Expanded(
             child: TextFormField(
           controller: _controller,
@@ -355,8 +368,13 @@ class _LoginViewState extends State<LoginView> {
             errorStyle: TextStyle(color: Color(0xffFF9481), fontSize: 12.0),
           ),
           validator: (String value) {
-            var emailReg = RegExp(
-                r'^((13[0-9])|(14[0-9])|(15[0-9])|(16[0-9])|(17[0-9])|(18[0-9])|(19[0-9]))\d{8}$');
+            var emailReg;
+            if (_phoenCode == '+86') {
+              emailReg = RegExp(
+                  r'^((13[0-9])|(14[0-9])|(15[0-9])|(16[0-9])|(17[0-9])|(18[0-9])|(19[0-9]))\d{8}$');
+            } else if (_phoenCode == '+855') {
+              emailReg = RegExp(r'^\d{8}$');
+            }
             if (!emailReg.hasMatch(value)) {
               return 'Please enter the correct phone number';
             }

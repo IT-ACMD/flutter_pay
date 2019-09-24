@@ -221,6 +221,10 @@ class _HomeViewState extends State<HomeView>
                           ],
                         )),
                     onTap: () {
+                      if (eUserInfo.isPayCode) {
+                        Navigator.of(context).pushNamed(infos.linkUrl);
+                        return;
+                      }
                       List hears = [
                         {
                           'name': 'authorization',
@@ -233,6 +237,7 @@ class _HomeViewState extends State<HomeView>
                           if (object1['success'] &&
                               object1['data'] != null &&
                               object1['data'] == true) {
+                            eUserInfo.isPayCode = true;
                             Navigator.of(context).pushNamed(infos.linkUrl);
                           } else {
                             String content =

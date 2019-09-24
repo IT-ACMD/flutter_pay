@@ -1,6 +1,5 @@
 //import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 
 class QRCodePage extends StatefulWidget {
@@ -69,7 +68,7 @@ class _MyScanState extends State<QRCodePage> {
         });
       }
     } on FormatException {
-      setState(() => this.barcode =
+      setState(() => this.barcode = 
           'null (User returned using the "back"-button before scanning anything. Result)');
     } catch (e) {
       setState(() => this.barcode = 'Unknown error: $e');
