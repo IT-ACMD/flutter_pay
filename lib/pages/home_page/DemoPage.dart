@@ -1,4 +1,4 @@
-//这是转账页面
+//这是demo页面
 import 'package:flutter/material.dart';
 import 'package:flutter_app/widget/AppTitleBar.dart';
 import 'package:flutter_app/widget/title_barA.dart';

@@ -1,5 +1,6 @@
-//import 'package:barcode_scan/barcode_scan.dart';
+import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 
 class QRCodePage extends StatefulWidget {
@@ -52,7 +53,7 @@ class _MyScanState extends State<QRCodePage> {
   }
 
   Future scan() async {
-    /*try {
+    try {
       String barcode = await BarcodeScanner.scan();
       setState(() {
         return this.barcode = barcode;
@@ -72,6 +73,6 @@ class _MyScanState extends State<QRCodePage> {
           'null (User returned using the "back"-button before scanning anything. Result)');
     } catch (e) {
       setState(() => this.barcode = 'Unknown error: $e');
-    }*/
+    }
   }
 }

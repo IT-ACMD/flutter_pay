@@ -1,8 +1,8 @@
 package io.flutter.plugins;
 
 import io.flutter.plugin.common.PluginRegistry;
+import com.apptreesoftware.barcodescan.BarcodeScanPlugin;
 import io.flutter.plugins.pathprovider.PathProviderPlugin;
-import com.yoozoo.sharesdk.SharesdkPlugin;
 
 /**
  * Generated file. Do not edit.
@@ -12,8 +12,8 @@ public final class GeneratedPluginRegistrant {
     if (alreadyRegisteredWith(registry)) {
       return;
     }
+    BarcodeScanPlugin.registerWith(registry.registrarFor("com.apptreesoftware.barcodescan.BarcodeScanPlugin"));
     PathProviderPlugin.registerWith(registry.registrarFor("io.flutter.plugins.pathprovider.PathProviderPlugin"));
-    SharesdkPlugin.registerWith(registry.registrarFor("com.yoozoo.sharesdk.SharesdkPlugin"));
   }
 
   private static boolean alreadyRegisteredWith(PluginRegistry registry) {

@@ -8,7 +8,7 @@ import 'package:flutter_app/tools/Filehelper.dart';
 import 'accountData.dart';
 
 //是否测试
-final eIsTest = false;
+final eIsTest = true;
 //用户信息
 final eUserInfo = UserInfo();
 //用户默认账户信心

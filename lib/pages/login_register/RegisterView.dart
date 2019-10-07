@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app/data/dataCenter.dart';
+import 'package:flutter_app/pages/country_select/CountryCodeSelectPage.dart';
 import 'package:flutter_app/tools/ECHttp.dart';
 import 'package:flutter_app/tools/ECMessage.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -204,10 +205,19 @@ class _RegisterViewState extends State<RegisterView> {
             ],
           ),
           onTap: () {
-            changeRegion(context).then((val) {
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (BuildContext context) {
+              return CountryCodeSelect();
+            })).then((val) {
+              if (val != null) {
+                _phoenCode = val;
+                setState(() {});
+              }
+            });
+            /*changeRegion(context).then((val) {
               _phoenCode = val;
               setState(() {});
-            });
+            });*/
           },
         ),
         Expanded(

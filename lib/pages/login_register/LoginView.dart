@@ -4,11 +4,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/data/dataCenter.dart';
+import 'package:flutter_app/pages/country_select/CountryCodeSelectPage.dart';
 import 'package:flutter_app/pages/login_register/RegisterView.dart';
 import 'package:flutter_app/tools/ECHttp.dart';
 import 'package:flutter_app/tools/ECMessage.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sharesdk/sharesdk.dart';
+//import 'package:sharesdk/sharesdk.dart';
 
 /// 墨水瓶（`InkWell`）可用时使用的字体样式。
 final TextStyle _availableStyle = TextStyle(
@@ -63,12 +64,12 @@ class _LoginViewState extends State<LoginView> {
   void initState() {
     super.initState();
     _seconds = countdown = 60;
-    ShareSDKRegister register = ShareSDKRegister();
+    /*ShareSDKRegister register = ShareSDKRegister();
     register.setupWechat(
         "wx617c77c82218ea2c", "c7253e5289986cf4c4c74d1ccc185fb1");
     register.setupQQ("100371282", "aed9b0303e3ed1e27bae87c33761161d");
     //注册
-    ShareSDK.regist(register);
+    ShareSDK.regist(register);*/
     _controller.addListener(onChange);
     _controllerp.addListener(onChangep);
     _phoenCode = '+855';
@@ -220,9 +221,9 @@ class _LoginViewState extends State<LoginView> {
                           ));
                         }),
                     onPointerUp: (PointerUpEvent event) {
-                      item['title'] == '微信'
+                      /*item['title'] == '微信'
                           ? authToWechat(context)
-                          : authToQQ(context);
+                          : authToQQ(context);*/
                     },
                   );
                 },
@@ -288,6 +289,7 @@ class _LoginViewState extends State<LoginView> {
       if (result != null) {
         var jsonData = json.decode(result);
         if (jsonData['success']) {
+          showMessageOne(context, jsonData['data']);
           //去获取token
           toGetToken();
         } else {
@@ -351,10 +353,17 @@ class _LoginViewState extends State<LoginView> {
             ],
           ),
           onTap: () {
-            changeRegion(context).then((val) {
-              _phoenCode = val;
-              setState(() {});
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (BuildContext context) {
+              return CountryCodeSelect();
+            })).then((val) {
+              if (val != null) {
+                _phoenCode = val;
+                setState(() {});
+              }
             });
+
+            /*changeRegion(context).then();*/
           },
         ),
         Expanded(
@@ -522,7 +531,7 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 
-  void authToWechat(BuildContext context) {
+  /*void authToWechat(BuildContext context) {
     ShareSDK.auth(ShareSDKPlatforms.wechatSession, null,
         (SSDKResponseState state, Map user, SSDKError error) {
       showAlert(state, user != null ? user : error.rawData, context);
@@ -560,5 +569,5 @@ class _LoginViewState extends State<LoginView> {
         title = state.toString();
         break;
     }
-  }
+  }*/
 }
