@@ -142,6 +142,6 @@ class _CountryCodeSelectState extends State<CountryCodeSelect> {
   }
 
   void _selectItem(CountryCode e) {
-    Navigator.pop(context, e.dialCode);
+    Navigator.pop(context, e);
   }
 }

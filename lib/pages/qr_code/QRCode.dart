@@ -4,6 +4,12 @@ import 'package:flutter/services.dart';
 
 
 class QRCodePage extends StatefulWidget {
+  String resultStr = '';
+
+  QRCodePage(String barcode){
+    this.resultStr = barcode;
+  }
+
   @override
   State<StatefulWidget> createState() {
     return _MyScanState();
@@ -15,6 +21,7 @@ class _MyScanState extends State<QRCodePage> {
 
   @override
   void initState() {
+    barcode = widget.resultStr;
     super.initState();
   }
 
@@ -33,7 +40,7 @@ class _MyScanState extends State<QRCodePage> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 8.0),
               child: RaisedButton(
-                  color: Colors.orange,
+                  color: Color(0xffC74F3A),
                   textColor: Colors.white,
                   splashColor: Colors.blueGrey,
                   onPressed: scan,

@@ -21,12 +21,9 @@ class _ContactUsState extends State<ContactUs> {
         appBar: AppBarA(
           child: AppTitleBar(title: 'TinhTinh Contact Us'),
         ),
-        body: SingleChildScrollView(
-            child: Column(
-          children: <Widget>[
-            buildhead(),
-          ],
-        )),
+        body: OverflowBox(
+          child: buildhead(),
+        ),
         drawer: Drawer(
           child: MyDrawer(),
         ));
@@ -65,7 +62,6 @@ class _ContactUsState extends State<ContactUs> {
                   fontSize: 10.0,
                   fontWeight: FontWeight.w600),
             ),
-            
             SizedBox(
               height: 150.0,
             ),

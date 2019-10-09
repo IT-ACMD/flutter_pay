@@ -1,6 +1,7 @@
 /// 服务器路径
 /// 真实服务器地址
 final eServiceUrl = 'https://n.shningmi.com/tinhpayapi/';
+
 /// 注册
 //final eServiceUrl = 'http://192.168.6.61:8089/tinhpayapi/';
 /// 币种

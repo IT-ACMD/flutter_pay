@@ -17,12 +17,19 @@ class CountryCode {
   /// the dial code (+39,+93..)
   String dialCode;
 
-  CountryCode({this.name, this.flagUri, this.code, this.dialCode});
+  /// the bi zhong (CNY,USD)
+  String currency;
+
+  /// the uusid
+  String id;
+
+  CountryCode(
+      {this.name, this.flagUri, this.code, this.dialCode, this.currency, this.id});
 
   @override
   String toString() => "$dialCode";
 
-  String toLongString() => "$dialCode $name";
+  String toLongString() => "$name $currency ";
 
   String toCountryStringOnly() => '$name';
 }

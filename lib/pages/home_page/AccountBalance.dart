@@ -13,6 +13,9 @@ class AccountBalance extends StatefulWidget {
 class _AccountBalanceState extends State<AccountBalance> {
   @override
   void initState() {
+    getAccountList().then((res) {
+      setState(() {});
+    });
     super.initState();
   }
 
@@ -26,8 +29,14 @@ class _AccountBalanceState extends State<AccountBalance> {
           itemCount: eAccountList.length,
           itemBuilder: (BuildContext context, int index) {
             return ListTile(
-              title: Text('${eAccountList[index].currency_code}',style: TextStyle(color: Color(0xff222222),fontSize: 16.0),),
-              trailing: Text('${eAccountList[index].amount}',style: TextStyle(color: Color(0xffC74F3A),fontSize: 18.0),),
+              title: Text(
+                '${eAccountList[index].currency_code}',
+                style: TextStyle(color: Color(0xff222222), fontSize: 16.0),
+              ),
+              trailing: Text(
+                '${eAccountList[index].amount}',
+                style: TextStyle(color: Color(0xffC74F3A), fontSize: 18.0),
+              ),
               onTap: () => Navigator.of(context).pop(index),
             );
           },

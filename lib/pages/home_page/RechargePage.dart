@@ -10,6 +10,7 @@ class RechargePage extends StatefulWidget {
 }
 
 class _RechargePageState extends State<RechargePage> {
+  final bankImg = 'images/cash_to_bank_card.png';
   final dtodImg = 'images/dtod_recharge.png';
   final dotImg = 'images/dot_recharge.png';
 
@@ -27,6 +28,15 @@ class _RechargePageState extends State<RechargePage> {
         body: SingleChildScrollView(
             child: Column(
           children: <Widget>[
+            buildOption(
+                bankImg,
+                'Bank Card recharge',
+                '\nYou will charge money from your designated bank\n card to your account, convenient and fast!',
+                ''),
+            Container(
+              height: 1.0,
+              color: Color(0xffF8F7F7),
+            ),
             buildOption(dtodImg, 'Door-to-door recharge',
                 '\nReservation clerk\'s door-to-door recharge', '预约充值'),
             Container(
@@ -67,7 +77,7 @@ class _RechargePageState extends State<RechargePage> {
                       ]),
                   softWrap: true,
                 )),
-             Expanded(
+            Expanded(
                 child: Align(
               //padding: EdgeInsets.only(right: 0.0),
               alignment: Alignment.centerRight,

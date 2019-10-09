@@ -31,7 +31,7 @@ class AppTitleBar extends StatelessWidget {
                       child: Image.asset(
                         'images/arrow_left.png',
                         height: 24.0,
-                        width: 24.0,
+                        width: 30.0,
                         color: Colors.white,
                         fit: BoxFit.contain,
                       ),

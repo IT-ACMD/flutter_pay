@@ -1,16 +1,19 @@
 //这是app的主页
 import 'dart:convert';
 
+import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_app/data/dataCenter.dart';
 import 'package:flutter_app/pages/home_page/SettingPaymentPwd.dart';
 import 'package:flutter_app/pages/qr_code/PaymentCode.dart';
 import 'package:flutter_app/pages/qr_code/QRCode.dart';
+import 'package:flutter_app/pages/qr_code/ReceiptCode.dart';
 import 'package:flutter_app/tools/ECHttp.dart';
 import 'package:flutter_app/tools/ECMessage.dart';
 import 'package:flutter_app/widget/AppTitleBar.dart';
 import 'package:flutter_app/widget/title_barA.dart';
+import 'package:flutter/services.dart';
 
 import 'MyDrawer.dart';
 
@@ -127,14 +130,20 @@ class _HomeViewState extends State<HomeView>
             ),
             onTap: () {
               if (i == 0) {
-                Navigator.of(context)
+                scan();
+                /*Navigator.of(context)
                     .push(MaterialPageRoute(builder: (BuildContext context) {
                   return QRCodePage();
-                }));
+                }));*/
               } else if (i == 1) {
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (BuildContext context) {
                   return PaymentCode();
+                }));
+              } else if (i == 2) {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (BuildContext context) {
+                  return ReceiptCode();
                 }));
               }
             },
@@ -142,6 +151,34 @@ class _HomeViewState extends State<HomeView>
         }),
       ),
     );
+  }
+
+  Future scan() async {
+    try {
+      String barcode = await BarcodeScanner.scan();
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (BuildContext context) {
+        return QRCodePage(barcode);
+      }));
+      /*setState(() {
+        return this.barcode = barcode;
+      });*/
+    } on PlatformException catch (e) {
+      if (e.code == BarcodeScanner.CameraAccessDenied) {
+        //setState(() {
+        //return this.barcode = 'The user did not grant the camera permission!';
+        //});
+      } else {
+        //setState(() {
+        //return this.barcode = 'Unknown error: $e';
+        //});
+      }
+    } on FormatException {
+      //setState(() => this.barcode =
+      //'null (User returned using the "back"-button before scanning anything. Result)');
+    } catch (e) {
+      //setState(() => this.barcode = 'Unknown error: $e');
+    }
   }
 
   List<InfoService> infoServicesData = [
@@ -227,7 +264,7 @@ class _HomeViewState extends State<HomeView>
                           ],
                         )),
                     onTap: () {
-                      if (eUserInfo.isPayCode) {
+                      if (eUserInfo.isPayCode || eIsTest) {
                         Navigator.of(context).pushNamed(infos.linkUrl);
                         return;
                       }
@@ -237,6 +274,7 @@ class _HomeViewState extends State<HomeView>
                           'value': 'bearer ${eUserInfo.accessToken}'
                         }
                       ];
+                      //查询是否设置支付密码
                       ECHttp.getData('account/yzPassword', hears).then((res) {
                         if (res != null && res.length > 0) {
                           var object1 = json.decode(res);

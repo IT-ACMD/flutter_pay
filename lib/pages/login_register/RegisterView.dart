@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -9,6 +10,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'loginView.dart';
 
+/// 墨水瓶（`InkWell`）可用时使用的字体样式。
+final TextStyle _availableStyle = TextStyle(
+  color: const Color(0xffFF9481),
+);
+
+/// 墨水瓶（`InkWell`）不可用时使用的样式。
+final TextStyle _unavailableStyle = TextStyle(
+  color: const Color(0xFFCCCCCC),
+);
+
 class RegisterView extends StatefulWidget {
   @override
   _RegisterViewState createState() => _RegisterViewState();
@@ -19,11 +30,28 @@ class _RegisterViewState extends State<RegisterView> {
   String _password, _phone, _phoenCode;
   bool isObscure = true;
   TextEditingController _controller = new TextEditingController();
+  TextEditingController _controllerCode = new TextEditingController();
   TextEditingController _controllerPwd = new TextEditingController();
+
+  /// 当前墨水瓶（`InkWell`）的字体样式。
+  TextStyle inkWellStyle = _availableStyle;
+
+  /// 当前墨水瓶（`InkWell`）的文本。
+  String _verifyStr = 'Get Verify Code';
+
+  /// 倒计时的计时器。
+  Timer _timer;
+
+  /// 当前倒计时的秒数。
+  int _seconds;
+
+  ///倒计时秒数 默认60秒
+  int countdown;
 
   @override
   void initState() {
     super.initState();
+    _seconds = countdown = 60;
     _phoenCode = '+855';
     _controller.addListener(onChange);
     _controllerPwd.addListener(onChangeP);
@@ -71,6 +99,12 @@ class _RegisterViewState extends State<RegisterView> {
               height: 1.0,
             ),
             SizedBox(height: 30.0),
+            buildCodeTextField(),
+            Container(
+              color: Color(0xffeeeeee),
+              height: 1.0,
+            ),
+            SizedBox(height: 30.0),
             buildPwdTextField(),
             Container(
               color: Color(0xffeeeeee),
@@ -81,6 +115,17 @@ class _RegisterViewState extends State<RegisterView> {
         ),
       ),
     ));
+  }
+
+  buildTitle() {
+    return Container(
+      alignment: Alignment.center,
+      padding: EdgeInsets.only(top: 40.0),
+      child: Text(
+        'Register',
+        style: TextStyle(fontSize: 26.0, color: Colors.black),
+      ),
+    );
   }
 
   Widget buildOtherText(BuildContext context) {
@@ -123,9 +168,19 @@ class _RegisterViewState extends State<RegisterView> {
     );
   }
 
+  //去注册
   toRegister() {
+    String code = _controllerCode.text;
+    if (_verifyStr == 'Get Verify Code') {
+      return showMessageOne(context, 'Please get the verification code first!');
+    }
     var url = 'user/user/insert';
-    Map map = {"phone": _phone, 'pwd': _password, 'phonecode': _phoenCode};
+    Map map = {
+      "phone": _phone,
+      'phonecode': _phoenCode,
+      'pwd': _password,
+      'code': code
+    };
     ECHttp.postDataJson(url, map).then((result) {
       if (result != null) {
         var jsonData = json.decode(result);
@@ -208,16 +263,12 @@ class _RegisterViewState extends State<RegisterView> {
             Navigator.of(context)
                 .push(MaterialPageRoute(builder: (BuildContext context) {
               return CountryCodeSelect();
-            })).then((val) {
-              if (val != null) {
-                _phoenCode = val;
+            })).then((code) {
+              if (code != null) {
+                _phoenCode = code.dialCode;
                 setState(() {});
               }
             });
-            /*changeRegion(context).then((val) {
-              _phoenCode = val;
-              setState(() {});
-            });*/
           },
         ),
         Expanded(
@@ -229,6 +280,7 @@ class _RegisterViewState extends State<RegisterView> {
             hintStyle: TextStyle(color: Color(0xffadadad), fontSize: 16.0),
             border: InputBorder.none,
           ),
+          autovalidate: true,
           validator: (String value) {
             var emailReg;
             if (_phoenCode == '+86') {
@@ -285,15 +337,16 @@ class _RegisterViewState extends State<RegisterView> {
           controller: _controllerPwd,
           style: TextStyle(color: Colors.black),
           obscureText: true,
+          autovalidate: true,
           decoration: InputDecoration(
-            hintText: 'new passworld',
+            hintText: 'New passworld',
             hintStyle: TextStyle(color: Color(0xffadadad), fontSize: 16.0),
             border: InputBorder.none,
           ),
           validator: (String value) {
             var emailReg = RegExp(r'^\d{6}$');
             if (!emailReg.hasMatch(value)) {
-              return 'Please enter a 6-bit code';
+              return 'Please enter a 6-bit number code';
             }
           },
         )),
@@ -301,14 +354,99 @@ class _RegisterViewState extends State<RegisterView> {
     );
   }
 
-  buildTitle() {
-    return Container(
-      alignment: Alignment.center,
-      padding: EdgeInsets.only(top: 40.0),
-      child: Text(
-        'Register',
-        style: TextStyle(fontSize: 26.0, color: Colors.black),
-      ),
+  //验证码文本框
+  buildCodeTextField() {
+    return Row(
+      children: <Widget>[
+        Expanded(
+            child: TextFormField(
+          controller: _controllerCode,
+          style: TextStyle(color: Colors.black),
+          obscureText: true,
+          decoration: InputDecoration(
+            hintText: 'Code', //'Please enter your code',
+            hintStyle: TextStyle(color: Color(0xffADADAD), fontSize: 16.0),
+            border: InputBorder.none,
+          ),
+          autovalidate: true,
+          onFieldSubmitted: (String value) {
+            var emailReg = RegExp(r'^\d{4}$');
+            if (!emailReg.hasMatch(value)) {
+              return 'Please enter a 4-bit code';
+            }
+          },
+        )),
+        GestureDetector(
+          child: Padding(
+              child: Text(
+                '$_verifyStr',
+                style: inkWellStyle,
+              ),
+              padding: EdgeInsets.fromLTRB(0.0, 14.0, 0.0, 14.0)),
+          onTap: (_seconds == countdown)
+              ? () {
+                  //if (_formKey.currentState.validate()) {
+                  //获取验证码
+                  toGetVerifyCode();
+                  //}
+                }
+              : null,
+        ),
+      ],
     );
+  }
+
+  //去获取验证码
+  toGetVerifyCode() {
+    var url = 'user/user/verification';
+    Map map = {"phone": '$_phoenCode$_phone'};
+    ECHttp.postDataJson(url, map).then((result) {
+      /*var url = 'code/sms?mobile=$_phone';
+    List hears = [
+      {'name': 'deviceId', 'value': '008'}
+    ];
+    ECHttp.getData(url, hears).then((result) {*/
+      if (result != null) {
+        _startTimer();
+        inkWellStyle = _unavailableStyle;
+        _verifyStr = '已发送$_seconds' + 's';
+        setState(() {});
+      } else {
+        showMessageOne(
+            context, 'This account does not exist. Please register first!');
+      }
+    }).catchError((e) {
+      //执行失败会走到这里
+      showMessageOne(context, 'Get verify vode error, please try again later!');
+    }).whenComplete(() {
+      //无论如何走这里
+      //showMessageOne(context, 'The request has timed out, please try again later!');
+    });
+  }
+
+  ///启动倒计时计时器
+  void _startTimer() {
+    // 计时器（`Timer`）组件的定期（`periodic`）构造函数，创建一个新的重复计时器。
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      if (_seconds == 0) {
+        _cancelTimer();
+        _seconds = countdown;
+        inkWellStyle = _availableStyle;
+        setState(() {});
+        return;
+      }
+      _seconds--;
+      _verifyStr = '已发送$_seconds' + 's';
+      setState(() {});
+      if (_seconds == 0) {
+        _verifyStr = '重新发送';
+      }
+    });
+  }
+
+  /// 取消倒计时的计时器。
+  void _cancelTimer() {
+    // 计时器（`Timer`）组件的取消（`cancel`）方法，取消计时器。
+    _timer?.cancel();
   }
 }

@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 //引入自定义的其他页面文件
+import 'SplashScreen.dart';
+import 'pages/exchange_rate/ExchangeRemittance.dart';
 import 'pages/home_page/AccountBalance.dart';
 import 'pages/home_page/AccountPage.dart';
 import 'pages/home_page/CashWithDrawal.dart';
 import 'pages/home_page/CashWithDrawalBank.dart';
 import 'pages/home_page/ContactUs.dart';
-import 'pages/home_page/ExchangeRemittance.dart';
 import 'pages/home_page/Index.dart';
-import 'pages/home_page/MinedPage.dart';
-import 'pages/home_page/MyBankCard.dart';
-import 'pages/home_page/MyCardBag.dart';
-import 'pages/home_page/MySetUp.dart';
 import 'pages/home_page/RechargeDtod.dart';
 import 'pages/home_page/RechargePage.dart';
 import 'pages/home_page/SetUpMessage.dart';
 import 'pages/home_page/TransferAccounts.dart';
 import 'pages/home_page/VirtualCard.dart';
 import 'pages/login_register/loginView.dart';
+import 'pages/my_self/MinedPage.dart';
+import 'pages/my_self/MyBankCard.dart';
+import 'pages/my_self/MyCardBag.dart';
+import 'pages/my_self/MySetUp.dart';
 
 main() async {
   runApp(MyApp(true));
@@ -65,9 +66,7 @@ class MyApp extends StatelessWidget {
       title: '项目标题',
       theme: ThemeData(
           primaryColor: Color(0xffc74f3a), accentColor: Colors.white), //设置为黑色主题
-      home: _login
-          ? LoginView() //RegisterView()
-          : Index(), //,//BottomMenu(),//这个类在，bottom_menu.dart  中定义。LoginView()
+      home: SplashScreen(), //,//BottomMenu(),//这个类在，bottom_menu.dart  中定义。LoginView()
       routes: <String, WidgetBuilder>{
         'loginPage': (_) => LoginView(),
         'home': (_) => Index(),

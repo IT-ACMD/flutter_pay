@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter_app/data/bankData.dart';
 import 'package:flutter_app/data/userInfo.dart';
 import 'package:flutter_app/tools/ECHttp.dart';
 import 'package:flutter_app/tools/Filehelper.dart';
@@ -8,7 +9,7 @@ import 'package:flutter_app/tools/Filehelper.dart';
 import 'accountData.dart';
 
 //是否测试
-final eIsTest = true;
+final eIsTest = false;
 //用户信息
 final eUserInfo = UserInfo();
 //用户默认账户信心
@@ -52,7 +53,35 @@ afterLogin() {
   //writeToFile();
 
   //获取所有币种
-  //getCurrentList();
+  getCurrentList();
+
+  //获取所有银行卡
+  getUserBankAll();
+}
+
+List<BankInfo> eBankdatas = [];
+
+getUserBankAll() async {
+  List list = [
+    {'name': 'authorization', 'value': 'bearer ${eUserInfo.accessToken}'},
+  ];
+  String result = await ECHttp.getData('user/user-bank/selectBankId', list);
+  if (result != null) {
+    var jsonData = json.decode(result);
+    if (jsonData['success']) {
+      eBankdatas.clear();
+      List list = jsonData['data'];
+      for (int i = 0; i < list.length; ++i) {
+        BankInfo bank = BankInfo();
+        bank.id = list[i]['uuid'];
+        bank.bankName = list[i]['bankName'];
+        bank.branch = list[i]['branch'];
+        bank.cardNumber = list[i]['cardNumber'];
+        bank.cardUser = list[i]['cardUser'];
+        eBankdatas.add(bank);
+      }
+    }
+  }
 }
 
 //获取用户的所有有账户信息
@@ -65,6 +94,7 @@ getAccountList() async {
     var jsonData = json.decode(data);
     if (jsonData['success']) {
       List list = jsonData['data'];
+      eAccountList.clear();
       for (int i = 0; i < list.length; ++i) {
         AccountData accountData = new AccountData();
         accountData.amount = list[i]['amount'].toString();
@@ -81,6 +111,47 @@ getAccountList() async {
   }
 }
 
+Map efromCurrency;
+Map etoCurrency;
+
+List<Map> eCodes = [
+  {
+    "name": "China",
+    "code": "CN",
+    "dial_code": "+93",
+    "currency": "CNY",
+  },
+  {
+    "name": "United Kingdom",
+    "code": "GB",
+    "dial_code": "+358",
+    "currency": "GBP",
+  },
+  {
+    "name": "United States",
+    "code": "US",
+    "dial_code": "+355",
+    "currency": "USD",
+  },
+  {
+    "name": "Japan",
+    "code": "JP",
+    "dial_code": "+213",
+    "currency": "JPY",
+  },
+  {
+    "name": "European Union",
+    "code": "EU",
+    "dial_code": "+1684",
+    "currency": "EUR",
+  },
+  {
+    "name": "Hong Kong",
+    "code": "HK",
+    "dial_code": "+1684",
+    "currency": "HKD",
+  },
+];
 //获取所有币种
 getCurrentList() async {
   List hears = [
@@ -89,9 +160,38 @@ getCurrentList() async {
   String data = await ECHttp.getData('currency/tpay-currency/list', hears);
   if (data != null && data.length > 0) {
     var jsonData = json.decode(data);
-    if (jsonData['success']) {}
+    if (jsonData['success']) {
+      List list = jsonData['data']['records'];
+      List<Map> codes = List();
+      codes.addAll(eCodes);
+      eCodes.clear();
+      for (int i = 0; i < list.length; ++i) {
+        String id = list[i]['uuid'];
+        String currencyCode = list[i]['currencyCode'];
+        for (int j = 0; j < codes.length; ++j) {
+          if (codes[j]['currency'] == currencyCode) {
+            codes[j]['id'] = id;
+            eCodes.add(codes[j]);
+            if (codes[j]['currency'] == 'USD') {
+              efromCurrency = codes[j];
+            }
+            if (codes[j]['currency'] == 'CNY') {
+              etoCurrency = codes[j];
+            }
+            codes.remove(codes[j]);
+            j--;
+          }
+        }
+      }
+    }
   }
 }
+/*"uuid":"0dda153bb5de49988aa846be5a39c986",
+"currencyName":"港元",
+"currencyCode":"HKD",
+"country":"香港",
+"createAt":{"date":{"year":2019,"month":9,"day":6},
+"time":{"hour":20,"minute":3,"second":55,"nano":0}*/
 
 //
 //创建文件写入token

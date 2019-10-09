@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/data/dataCenter.dart';
+import 'package:simple_animations/simple_animations.dart';
 
 class MyDrawer extends StatelessWidget {
   // 菜单文本前面的图标大小
@@ -39,22 +40,10 @@ class MyDrawer extends StatelessWidget {
   ];
 
   // 菜单文本跳转的页面
-  List menuLink = [
-    '转账',
-    '充值',
-    '提现',
-    '兑汇',
-    '虚拟卡',
-    '账户',
-    '',
-    '联系我们',
-    '我的'
-  ];
+  List menuLink = ['转账', '充值', '提现', '兑汇', '虚拟卡', '账户', '', '联系我们', '我的'];
 
   // 菜单文本的样式
-  TextStyle menuStyle = TextStyle(
-    fontSize: 15.0,
-  );
+  TextStyle menuStyle = TextStyle(fontSize: 15.0, color: Colors.white);
 
   @override
   Widget build(BuildContext context) {
@@ -88,44 +77,52 @@ class MyDrawer extends StatelessWidget {
         height: 68.0,
         fit: BoxFit.cover,
       );
-      return Container(
-        height: 211.0,
-        alignment: Alignment.bottomCenter,
-        //padding: EdgeInsets.symmetric(vertical: 30.0),
-        padding: const EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 30.0),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Container(
-                decoration: BoxDecoration(
-                    border: Border.all(width: 1.0, color: Colors.white),
-                    borderRadius: BorderRadius.all(Radius.circular(80.0))),
-                child: ClipOval(
-                  child: img,
-                )),
-            Container(
-                padding: EdgeInsets.only(left: 26.0),
-                child: RichText(
-                  textAlign: TextAlign.start,
-                  text: TextSpan(
-                      text: 'Welcome',
-                      style: TextStyle(
-                          color: Color(0xffFF9A6C),
-                          fontWeight: FontWeight.w500,
-                          height: 1.3),
-                      children: <TextSpan>[
-                        TextSpan(
-                            text: '\n${eUserInfo.name}',
-                            style: TextStyle(color: Colors.white)),
-                        TextSpan(
-                            text: '\nYour ID ：${eUserInfo.cardId}',
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 10.0))
-                      ]),
-                ))
-          ],
-        ),
-      );
+      return FadeIn(
+          double.parse((index / 3).toString()),
+          InkWell(
+            child: Container(
+              height: 211.0,
+              alignment: Alignment.bottomCenter,
+              //padding: EdgeInsets.symmetric(vertical: 30.0),
+              padding: const EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 30.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                      decoration: BoxDecoration(
+                          border: Border.all(width: 1.0, color: Colors.white),
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(80.0))),
+                      child: ClipOval(
+                        child: img,
+                      )),
+                  Container(
+                      padding: EdgeInsets.only(left: 26.0),
+                      child: RichText(
+                        textAlign: TextAlign.start,
+                        text: TextSpan(
+                            text: 'Welcome',
+                            style: TextStyle(
+                                color: Color(0xffFF9A6C),
+                                fontWeight: FontWeight.w500,
+                                height: 1.3),
+                            children: <TextSpan>[
+                              TextSpan(
+                                  text: '\n${eUserInfo.name}',
+                                  style: TextStyle(color: Colors.white)),
+                              TextSpan(
+                                  text: '\nYour ID ：${eUserInfo.cardId}',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 10.0))
+                            ]),
+                      ))
+                ],
+              ),
+            ),
+            onTap: () {
+              Navigator.of(context).pushNamed(menuLink[index]);
+            },
+          ));
     }
 
     if (index == 1) {
@@ -136,8 +133,10 @@ class MyDrawer extends StatelessWidget {
       );
     }
 
-    if(index == menuIcons.length + 2){
-      return SizedBox(height: 150,);
+    if (index == menuIcons.length + 2) {
+      return SizedBox(
+        height: 150,
+      );
     }
 
     index -= 2;
@@ -161,11 +160,43 @@ class MyDrawer extends StatelessWidget {
       ),
     );
 
-    return InkWell(
-      child: listItemContent,
-      onTap: () {
-        Navigator.of(context).pushNamed(menuLink[index]);
-      },
+    return FadeIn(
+        double.parse((index / 3).toString()),
+        InkWell(
+          child: listItemContent,
+          onTap: () {
+            Navigator.of(context).pushNamed(menuLink[index]);
+          },
+        ));
+  }
+}
+
+class FadeIn extends StatelessWidget {
+  final double delay;
+  final Widget child;
+
+  FadeIn(this.delay, this.child);
+
+  @override
+  Widget build(BuildContext context) {
+    final tween = MultiTrackTween([
+      Track("opacity")
+          .add(Duration(milliseconds: 300), Tween(begin: 0.0, end: 1.0)),
+      Track("translateX").add(
+          Duration(milliseconds: 300), Tween(begin: 130.0, end: 0.0),
+          curve: Curves.easeOut)
+    ]);
+
+    return ControlledAnimation(
+      delay: Duration(milliseconds: (300 * delay).round()),
+      duration: tween.duration,
+      tween: tween,
+      child: child,
+      builderWithChild: (context, child, animation) => Opacity(
+            opacity: animation["opacity"],
+            child: Transform.translate(
+                offset: Offset(animation["translateX"], 0), child: child),
+          ),
     );
   }
 }

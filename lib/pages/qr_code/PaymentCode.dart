@@ -20,14 +20,15 @@ class _PaymentCodeState extends State<PaymentCode> {
         appBar: AppBarA(
           child: AppTitleBar(title: 'TinhTinh Payment code'),
         ),
-        body: Container(
-            color: Color(0xffDB6B52),
-            child: Column(
-              children: <Widget>[
-                buildhead(),
-                buildPhoneTextField(),
-              ],
-            )));
+        body: OverflowBox(
+            child: Container(
+                color: Color(0xffDB6B52),
+                child: Column(
+                  children: <Widget>[
+                    buildhead(),
+                    buildPhoneTextField(),
+                  ],
+                ))));
   }
 
   buildhead() {
@@ -51,9 +52,13 @@ class _PaymentCodeState extends State<PaymentCode> {
                 ),
               ),
             ),
+            Padding(
+                padding: EdgeInsets.only(top: 20.0, bottom: 10.0),
+                child: Image.asset(
+                  'images/bar_code.png',
+                )),
             Container(
               alignment: Alignment.center,
-              margin: EdgeInsets.only(top: 20.0),
               child: Text(
                 'View the big picture',
                 style: TextStyle(color: Color(0xff222222), fontSize: 12.0),
@@ -61,7 +66,7 @@ class _PaymentCodeState extends State<PaymentCode> {
             ),
             QrImage(
               version: 5,
-              data: '这是二维码的内容个锤字',
+              data: '这是付款码',
               size: 200,
               /*embeddedImage: AssetImage(
                       'images/default_avatar.png'),
