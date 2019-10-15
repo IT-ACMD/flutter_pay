@@ -45,6 +45,15 @@ android {
         versionCode 010//flutterVersionCode.toInteger()
         versionName '0.1.0'//flutterVersionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        ndk {
+            abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
+        }
+    }
+    
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
     }
 
     signingConfigs {

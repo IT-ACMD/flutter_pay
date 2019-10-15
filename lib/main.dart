@@ -9,6 +9,7 @@ import 'pages/home_page/CashWithDrawal.dart';
 import 'pages/home_page/CashWithDrawalBank.dart';
 import 'pages/home_page/ContactUs.dart';
 import 'pages/home_page/Index.dart';
+import 'pages/home_page/RechargeBank.dart';
 import 'pages/home_page/RechargeDtod.dart';
 import 'pages/home_page/RechargePage.dart';
 import 'pages/home_page/SetUpMessage.dart';
@@ -66,7 +67,8 @@ class MyApp extends StatelessWidget {
       title: '项目标题',
       theme: ThemeData(
           primaryColor: Color(0xffc74f3a), accentColor: Colors.white), //设置为黑色主题
-      home: SplashScreen(), //,//BottomMenu(),//这个类在，bottom_menu.dart  中定义。LoginView()
+      home:
+          SplashScreen(), //,//BottomMenu(),//这个类在，bottom_menu.dart  中定义。LoginView()
       routes: <String, WidgetBuilder>{
         'loginPage': (_) => LoginView(),
         'home': (_) => Index(),
@@ -85,6 +87,7 @@ class MyApp extends StatelessWidget {
         '我的设置': (_) => MySetUp(),
         '我的银行卡': (_) => MyBankCard(),
         '消息接收': (_) => SetUpMessage(),
+        '银行卡充值': (_) => RechargeBank(),
       },
     );
   }

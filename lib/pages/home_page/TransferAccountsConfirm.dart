@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/data/accountData.dart';
 import 'package:flutter_app/data/dataCenter.dart';
+import 'package:flutter_app/services/AccountService.dart';
 import 'package:flutter_app/tools/ECHttp.dart';
 import 'package:flutter_app/tools/ECMessage.dart';
 import 'package:flutter_app/widget/AppTitleBar.dart';
@@ -56,7 +57,7 @@ class _TransferAccountsConfirmState extends State<TransferAccountsConfirm> {
   buildSelectAccount() {
     return new GestureDetector(
       onTap: () {
-        _showModalBottomSheet().then((index) {
+        AccountService.showAcoutBottomSelect(context).then((index) {
           _selectedAccount = eAccountList[index];
           setState(() {});
         });
@@ -94,26 +95,6 @@ class _TransferAccountsConfirmState extends State<TransferAccountsConfirm> {
           ],
         ),
       ),
-    );
-  }
-
-  // 弹出底部菜单列表模态对话框
-  Future<int> _showModalBottomSheet() {
-    return showModalBottomSheet<int>(
-      context: context,
-      builder: (BuildContext context) {
-        return ListView.builder(
-          itemCount: eAccountList.length,
-          itemBuilder: (BuildContext context, int index) {
-            return ListTile(
-              title: Text(
-                  '${eAccountList[index].currency_code} (${eAccountList[index].amount})'),
-              trailing: Icon(Icons.keyboard_arrow_right),
-              onTap: () => Navigator.of(context).pop(index),
-            );
-          },
-        );
-      },
     );
   }
 

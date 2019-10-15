@@ -32,6 +32,7 @@ dependencies:
   barcode_scan: ^0.0.8
   country_code_picker: ^1.1.7
   simple_animations: ^1.3.3
+  url_launcher: ^5.1.6
   qr_flutter:
     git:
       url: git://github.com/lukef/qr.flutter.git
@@ -128,6 +129,10 @@ flutter:
     - images/add.png
     - images/splash_screen.png
     - images/ccb.png
+    - images/psbc.png
+    - images/abc.png
+    - images/boc.png
+    
 
     
     

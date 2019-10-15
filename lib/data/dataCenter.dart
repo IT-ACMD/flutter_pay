@@ -60,7 +60,7 @@ afterLogin() {
 }
 
 List<BankInfo> eBankdatas = [];
-
+//
 getUserBankAll() async {
   List list = [
     {'name': 'authorization', 'value': 'bearer ${eUserInfo.accessToken}'},
@@ -78,6 +78,13 @@ getUserBankAll() async {
         bank.branch = list[i]['branch'];
         bank.cardNumber = list[i]['cardNumber'];
         bank.cardUser = list[i]['cardUser'];
+        if (bank.bankName == "中国建设银行")
+          bank.logo = 'images/ccb.png';
+        else if (bank.bankName == "中国邮政储蓄银行")
+          bank.logo = 'images/psbc.png';
+        else if (bank.bankName == "中国农业银行")
+          bank.logo = 'images/abc.png';
+        else if (bank.bankName == "中国银行") bank.logo = 'images/boc.png';
         eBankdatas.add(bank);
       }
     }
@@ -111,8 +118,8 @@ getAccountList() async {
   }
 }
 
-Map efromCurrency;
-Map etoCurrency;
+Map efromCurrency; //默认兑汇账户付钱
+Map etoCurrency; //默认兑汇账户收钱
 
 List<Map> eCodes = [
   {

@@ -14,6 +14,7 @@ import 'package:flutter_app/tools/ECMessage.dart';
 import 'package:flutter_app/widget/AppTitleBar.dart';
 import 'package:flutter_app/widget/title_barA.dart';
 import 'package:flutter/services.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'MyDrawer.dart';
 
@@ -211,7 +212,7 @@ class _HomeViewState extends State<HomeView>
         imageUrl: 'images/contact_us.png',
         linkUrl: '联系我们'),
     InfoService(
-        title: 'My ThinThin', imageUrl: 'images/my_thinthin.png', linkUrl: '我的')
+        title: 'My TinhTinh', imageUrl: 'images/my_thinthin.png', linkUrl: '我的')
   ];
 
   buildInfomationServices() {
@@ -307,10 +308,15 @@ class _HomeViewState extends State<HomeView>
   }
 
   buildHotEvents() {
-    return Image.asset(
-      'images/activity.png',
-      width: double.infinity,
-      fit: BoxFit.cover,
+    return InkWell(
+      child: Image.asset(
+        'images/activity.png',
+        width: double.infinity,
+        fit: BoxFit.cover,
+      ),
+      onTap: () {
+        launch('http://www.tinhtinh.com.kh');
+      },
     );
   }
 }

@@ -1,5 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/data/accountData.dart';
+import 'package:flutter_app/data/bankData.dart';
+import 'package:flutter_app/data/dataCenter.dart';
+import 'package:flutter_app/pages/my_self/BankSelect.dart';
+import 'package:flutter_app/services/AccountService.dart';
 import 'package:flutter_app/widget/AppTitleBar.dart';
 import 'package:flutter_app/widget/check_sex_dialog.dart';
 import 'package:flutter_app/widget/title_barA.dart';
@@ -15,6 +20,8 @@ class _CashWithDrawalBankState extends State<CashWithDrawalBank> {
   var defaultAvatar = 'images/default_avatar.png';
   var nikeName = 'xiaoxiao';
   int groupValue = 1;
+  AccountData _selectedAccount = eDefaulAccount;
+  BankInfo newbank = BankInfo();
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +39,10 @@ class _CashWithDrawalBankState extends State<CashWithDrawalBank> {
               ),
               new GestureDetector(
                 onTap: () {
+                  AccountService.showAcoutBottomSelect(context).then((index) {
+                    _selectedAccount = eAccountList[index];
+                    setState(() {});
+                  });
                 },
                 child: new Container(
                   margin: new EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
@@ -40,7 +51,7 @@ class _CashWithDrawalBankState extends State<CashWithDrawalBank> {
                     children: <Widget>[
                       new Expanded(
                         child: new Text(
-                          'CNY（0.00）',
+                          '${_selectedAccount.currency_code} (${_selectedAccount.amount})',
                           style: TextStyle(
                               fontSize: 16.0, color: const Color(0xff222222)),
                         ),
@@ -67,19 +78,27 @@ class _CashWithDrawalBankState extends State<CashWithDrawalBank> {
                 height: 48.0,
                 child: new Row(
                   children: <Widget>[
-                    new Expanded(
-                      child: new Text(
-                        'Card number',
-                        style: TextStyle(
-                            fontSize: 16.0, color: const Color(0xff222222)),
-                      ),
+                    new Text(
+                      'Card number',
+                      style: TextStyle(
+                          fontSize: 16.0, color: const Color(0xff222222)),
                     ),
-                    new Padding(
+                    Expanded(
+                        child: TextField(
+                      textAlign: TextAlign.right,
+                      style:
+                          TextStyle(color: Color(0xff222222), fontSize: 16.0),
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.only(right: 15.0),
+                        border: InputBorder.none,
+                      ),
+                    )),
+                    /*new Padding(
                         padding: new EdgeInsets.fromLTRB(0.0, 0.0, 20.0, 0.0),
                         child: Image.asset(
                           'images/card_number.png',
                           fit: BoxFit.contain,
-                        )),
+                        )),*/
                   ],
                 ),
               ),
@@ -100,14 +119,19 @@ class _CashWithDrawalBankState extends State<CashWithDrawalBank> {
                             fontSize: 16.0, color: const Color(0xff222222)),
                       ),
                     ),
-                    new Padding(
-                      padding: new EdgeInsets.fromLTRB(0.0, 0.0, 20.0, 0.0),
-                      child: new Text(
-                        'Name of cardholder',
-                        style: TextStyle(
+                    Expanded(
+                        child: TextField(
+                      textAlign: TextAlign.right,
+                      style:
+                          TextStyle(color: Color(0xff222222), fontSize: 16.0),
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.only(right: 15.0),
+                        hintText: 'Name of cardholder',
+                        hintStyle: TextStyle(
                             fontSize: 16.0, color: const Color(0xff9A9A9A)),
+                        border: InputBorder.none,
                       ),
-                    ),
+                    )),
                   ],
                 ),
               ),
@@ -117,9 +141,17 @@ class _CashWithDrawalBankState extends State<CashWithDrawalBank> {
                 color: const Color(0xffF8F8F8),
               ),
               new GestureDetector(
-                //onTap: _showCheckSexDiaolog,
+                onTap: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (BuildContext context) {
+                    return BankSelect();
+                  })).then((code) {
+                    newbank.bankName = code.name;
+                    setState(() {});
+                  });
+                },
                 child: new Container(
-                  margin: new EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
+                  margin: new EdgeInsets.fromLTRB(20.0, 10.0, 0.0, 0.0),
                   height: 48.0,
                   child: new Row(
                     children: <Widget>[
@@ -133,9 +165,14 @@ class _CashWithDrawalBankState extends State<CashWithDrawalBank> {
                       new Padding(
                         padding: new EdgeInsets.fromLTRB(0.0, 0.0, 6.0, 0.0),
                         child: new Text(
-                          'Please choose the bank',
+                          newbank.bankName == null
+                              ? 'Please choose the bank'
+                              : newbank.bankName,
                           style: TextStyle(
-                              fontSize: 16.0, color: const Color(0xff9A9A9A)),
+                              fontSize: 16.0,
+                              color: newbank.bankName == null
+                                  ? Color(0xff9A9A9A)
+                                  : Color(0xff222222)),
                         ),
                       ),
                       Image.asset(
@@ -168,14 +205,16 @@ class _CashWithDrawalBankState extends State<CashWithDrawalBank> {
                             fontSize: 16.0, color: const Color(0xff222222)),
                       ),
                     ),
-                    new Padding(
-                      padding: new EdgeInsets.fromLTRB(0.0, 0.0, 20.0, 0.0),
-                      child: new Text(
-                        '',
-                        style: TextStyle(
-                            fontSize: 16.0, color: const Color(0xff9A9A9A)),
+                    Expanded(
+                        child: TextField(
+                      textAlign: TextAlign.right,
+                      style:
+                          TextStyle(color: Color(0xff222222), fontSize: 16.0),
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.only(right: 15.0),
+                        border: InputBorder.none,
                       ),
-                    ),
+                    )),
                   ],
                 ),
               ),

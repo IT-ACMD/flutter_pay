@@ -4,6 +4,7 @@ final eServiceUrl = 'https://n.shningmi.com/tinhpayapi/';
 
 /// 注册
 //final eServiceUrl = 'http://192.168.6.61:8089/tinhpayapi/';
+
 /// 币种
 //final eServiceUrl = 'http://192.168.6.58:8089/tinhpayapi/';
 /// 账户

@@ -8,6 +8,7 @@ import 'package:flutter_app/tools/ECMessage.dart';
 import 'package:flutter_app/widget/title_barA.dart';
 
 import 'MyBankCardAdd.dart';
+import 'MyBankCardModify.dart';
 
 class MyBankCard extends StatefulWidget {
   _MyBankCardState createState() => _MyBankCardState();
@@ -70,62 +71,78 @@ class _MyBankCardState extends State<MyBankCard> {
       }, // 监听
       movementDuration: Duration(milliseconds: 500),
       key: Key(item.toString()),
-      child: Container(
-        height: 100.0,
-        padding: EdgeInsets.only(top: 3.0),
-        decoration: BoxDecoration(
-            color: bgcolor,
-            border: Border.all(width: 1.0, color: Colors.white),
-            borderRadius: BorderRadius.all(Radius.circular(8.0))),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.fromLTRB(10.0, 10.0, 15.0, 0.0),
-              child: Image.asset(
-                'images/ccb.png',
-                fit: BoxFit.cover,
-                height: 36.0,
-                width: 36.0,
+      child: InkWell(
+        child: Container(
+          height: 100.0,
+          margin: EdgeInsets.only(top: 10.0),
+          padding: EdgeInsets.only(top: 3.0),
+          decoration: BoxDecoration(
+              color: bgcolor,
+              border: Border.all(width: 1.0, color: Colors.white),
+              borderRadius: BorderRadius.all(Radius.circular(8.0))),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.fromLTRB(10.0, 10.0, 15.0, 0.0),
+                child: Image.asset(
+                  eBankdatas[index].logo,
+                  fit: BoxFit.cover,
+                  height: 36.0,
+                  width: 36.0,
+                ),
               ),
-            ),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
-                    child: Text(
-                      eBankdatas[index].bankName,
-                      style: TextStyle(fontSize: 16.0, color: Colors.white),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
+                      child: Text(
+                        eBankdatas[index].bankName,
+                        style: TextStyle(fontSize: 16.0, color: Colors.white),
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
-                    child: Text(
-                      eBankdatas[index].cardNumber,
-                      style: TextStyle(fontSize: 16.0, color: Colors.white),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
+                      child: Text(
+                        eBankdatas[index].cardNumber,
+                        style: TextStyle(fontSize: 16.0, color: Colors.white),
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
-                    child: Text(
-                      eBankdatas[index].cardUser,
-                      style: TextStyle(fontSize: 16.0, color: Colors.white),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
+                      child: Text(
+                        eBankdatas[index].cardUser,
+                        style: TextStyle(fontSize: 16.0, color: Colors.white),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(0.0, 10.0, 12.0, 0.0),
-              child: Text(
-                'RMB',
-                style: TextStyle(fontSize: 16.0, color: Colors.white),
+              Padding(
+                padding: EdgeInsets.fromLTRB(0.0, 10.0, 12.0, 0.0),
+                child: Text(
+                  'RMB',
+                  style: TextStyle(fontSize: 16.0, color: Colors.white),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
+        onTap: () {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (BuildContext context) {
+            return MyBankCardModify(eBankdatas[index]);
+          })).then((isChange) {
+            if (isChange) {
+              //获取所有银行卡
+              getUserBankAll().then((res) {
+                setState(() {});
+              });
+            }
+          });
+        },
       ),
       background: Container(
         color: bbgcolor,
@@ -199,7 +216,7 @@ class _MyBankCardState extends State<MyBankCard> {
                     })).then((isChange) {
                       if (isChange) {
                         //获取所有银行卡
-                        getUserBankAll().then(() {
+                        getUserBankAll().then((res) {
                           setState(() {});
                         });
                       }
@@ -214,6 +231,7 @@ class _MyBankCardState extends State<MyBankCard> {
 
   buildheadButton() {
     return Container(
+        margin: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
         width: double.infinity,
         height: 50.0,
         color: Color(0xfff8f8f8),

@@ -32,7 +32,7 @@ class _RechargePageState extends State<RechargePage> {
                 bankImg,
                 'Bank Card recharge',
                 '\nYou will charge money from your designated bank\n card to your account, convenient and fast!',
-                ''),
+                '银行卡充值'),
             Container(
               height: 1.0,
               color: Color(0xffF8F7F7),

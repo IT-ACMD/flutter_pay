@@ -23,7 +23,7 @@ class _CashWithDrawalState extends State<CashWithDrawal> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBarA(
-          child: AppTitleBar(title: 'TinhTinh Recharge'),
+          child: AppTitleBar(title: 'TinhTinh Cash withdrawal'),
         ),
         body: SingleChildScrollView(
             child: Column(

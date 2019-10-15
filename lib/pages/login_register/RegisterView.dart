@@ -27,6 +27,7 @@ class RegisterView extends StatefulWidget {
 
 class _RegisterViewState extends State<RegisterView> {
   final _formKey = GlobalKey<FormState>();
+  final _codeKey = GlobalKey<FormState>();
   String _password, _phone, _phoenCode;
   bool isObscure = true;
   TextEditingController _controller = new TextEditingController();
@@ -93,13 +94,20 @@ class _RegisterViewState extends State<RegisterView> {
               height: 1.0,
             ),*/
             SizedBox(height: 30.0),
-            buildPhoneTextField(),
-            Container(
-              color: Color(0xffeeeeee),
-              height: 1.0,
+            Form(
+              key: _codeKey,
+              child: Column(
+                children: <Widget>[
+                  buildPhoneTextField(),
+                  Container(
+                    color: Color(0xffeeeeee),
+                    height: 1.0,
+                  ),
+                  SizedBox(height: 30.0),
+                  buildCodeTextField(),
+                ],
+              ),
             ),
-            SizedBox(height: 30.0),
-            buildCodeTextField(),
             Container(
               color: Color(0xffeeeeee),
               height: 1.0,
@@ -181,7 +189,7 @@ class _RegisterViewState extends State<RegisterView> {
       'pwd': _password,
       'code': code
     };
-    ECHttp.postDataJson(url, map).then((result) {
+    ECHttp.postDataJson(url, map, _phoenCode, _phone).then((result) {
       if (result != null) {
         var jsonData = json.decode(result);
         if (jsonData['success'] && jsonData['data'].indexOf('成功') != -1) {
@@ -280,7 +288,7 @@ class _RegisterViewState extends State<RegisterView> {
             hintStyle: TextStyle(color: Color(0xffadadad), fontSize: 16.0),
             border: InputBorder.none,
           ),
-          autovalidate: true,
+          //autovalidate: true,
           validator: (String value) {
             var emailReg;
             if (_phoenCode == '+86') {
@@ -337,7 +345,7 @@ class _RegisterViewState extends State<RegisterView> {
           controller: _controllerPwd,
           style: TextStyle(color: Colors.black),
           obscureText: true,
-          autovalidate: true,
+          //autovalidate: true,
           decoration: InputDecoration(
             hintText: 'New passworld',
             hintStyle: TextStyle(color: Color(0xffadadad), fontSize: 16.0),
@@ -385,10 +393,10 @@ class _RegisterViewState extends State<RegisterView> {
               padding: EdgeInsets.fromLTRB(0.0, 14.0, 0.0, 14.0)),
           onTap: (_seconds == countdown)
               ? () {
-                  //if (_formKey.currentState.validate()) {
-                  //获取验证码
-                  toGetVerifyCode();
-                  //}
+                  if (_codeKey.currentState.validate()) {
+                    //获取验证码
+                    toGetVerifyCode();
+                  }
                 }
               : null,
         ),
@@ -400,7 +408,7 @@ class _RegisterViewState extends State<RegisterView> {
   toGetVerifyCode() {
     var url = 'user/user/verification';
     Map map = {"phone": '$_phoenCode$_phone'};
-    ECHttp.postDataJson(url, map).then((result) {
+    ECHttp.postDataJson(url, map, _phoenCode, _phone).then((result) {
       /*var url = 'code/sms?mobile=$_phone';
     List hears = [
       {'name': 'deviceId', 'value': '008'}

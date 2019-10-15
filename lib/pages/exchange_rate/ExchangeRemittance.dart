@@ -8,7 +8,6 @@ import 'package:flutter_app/tools/ECHttp.dart';
 import 'package:flutter_app/tools/ECMessage.dart';
 import 'package:flutter_app/widget/AppTitleBar.dart';
 import 'package:flutter_app/widget/title_barA.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'ChoiceCurrency.dart';
 
@@ -25,22 +24,25 @@ class _ExchangeRemittanceState extends State<ExchangeRemittance> {
   TextEditingController _controller2 = new TextEditingController();
   @override
   void initState() {
+    fromValue = '100';
+    toValue = '713.21';
+
     fromCurrency = efromCurrency != null ? efromCurrency['currency'] : 'USD';
     fromImage = 'flags/us.png';
     toCurrency = etoCurrency != null ? etoCurrency['currency'] : 'CNY';
     toImage = 'flags/cn.png';
     fromId = efromCurrency != null ? efromCurrency['id'] : '0';
     toId = etoCurrency != null ? etoCurrency['id'] : '1';
-    _controller.text = '100';
-    _controller2.text = '713.21';
+    _controller.text = fromValue;
+    _controller2.text = toValue;
     _controller.addListener(onChange);
     _controller2.addListener(onChangep);
     super.initState();
   }
 
   void onChange() {
-    String text = _controller.text;
-    _controller2.text = (double.parse(text) * currencyRate).toString();
+    String text = _controller.text == '' ? '0' : _controller.text;
+    _controller2.text = (double.parse(text) * currencyRate).toStringAsFixed(2);
   }
 
   void onChangep() {
@@ -109,12 +111,15 @@ class _ExchangeRemittanceState extends State<ExchangeRemittance> {
         "amounts": _controller2.text,
       };
       ECHttp.postDataJson(url, param).then((res) {
-        if (res != null && res.length > 0) {
+        if (res != null) {
           var jsonData = json.decode(res);
           if (jsonData['success']) {
             showAlertDialog(this.context, 'Exchange success').then((res) {
               Navigator.of(context).pushNamed('home');
             });
+          } else {
+            showMessageOne(
+                this.context, 'Exchange failed please try again later');
           }
         }
       });
@@ -159,12 +164,12 @@ class _ExchangeRemittanceState extends State<ExchangeRemittance> {
               style: TextStyle(color: Color(0xff727272)),
             ),
           ),
-          buildFromAccount(fromImage, fromCurrency, '100', true),
+          buildAccount(true),
           Container(
             height: 1.0,
             color: Color(0xffF8F7F7),
           ),
-          buildToAccount(toImage, toCurrency, '713.21', false),
+          buildAccount(false),
           Container(
             height: 1.0,
             color: Color(0xffF8F7F7),
@@ -176,54 +181,6 @@ class _ExchangeRemittanceState extends State<ExchangeRemittance> {
         ],
       ),
     );
-  }
-
-  buildFromAccount(url, title, value, isfrom) {
-    return Container(
-        height: 50.0,
-        child: Row(
-          children: <Widget>[
-            InkWell(
-              child: Row(
-                children: <Widget>[
-                  Image.asset(
-                    url,
-                    package: 'country_code_picker',
-                    width: 33.0,
-                    height: 20.0,
-                  ),
-                  SizedBox(
-                    width: 6.0,
-                  ),
-                  Text(
-                    title,
-                    style: TextStyle(color: Color(0xff727272), fontSize: 16.0),
-                  ),
-                  SizedBox(
-                    width: 13.0,
-                  ),
-                  Image.asset(
-                    'images/forward.png',
-                    width: 16.0,
-                    height: 16.0,
-                  ),
-                ],
-              ),
-              onTap: () {
-                toChangeFromOrTo(isfrom);
-              },
-            ),
-            Expanded(
-                child: TextField(
-              textAlign: TextAlign.right,
-              controller: _controller,
-              style: TextStyle(color: Color(0xffadadad), fontSize: 16.0),
-              decoration: InputDecoration(
-                border: InputBorder.none,
-              ),
-            )),
-          ],
-        ));
   }
 
   toChangeFromOrTo(isfrom) {
@@ -254,7 +211,7 @@ class _ExchangeRemittanceState extends State<ExchangeRemittance> {
             if (object1['success']) {
               currencyRate = double.parse(object1['data']);
               _controller2.text =
-                  (double.parse(_controller.text) * currencyRate).toString();
+                  (double.parse(_controller.text) * currencyRate).toStringAsFixed(2);
             }
           }
         });
@@ -264,16 +221,28 @@ class _ExchangeRemittanceState extends State<ExchangeRemittance> {
     });
   }
 
-  buildToAccount(url, title, value, isfrom) {
+  buildAccount(isfrom) {
+    String image, currency;
+    TextEditingController con;
+    if (isfrom) {
+      image = fromImage;
+      currency = fromCurrency;
+      con = _controller;
+    } else {
+      image = toImage;
+      currency = toCurrency;
+      con = _controller2;
+    }
     return Container(
         height: 50.0,
+        padding: EdgeInsets.symmetric(horizontal: 10.0),
         child: Row(
           children: <Widget>[
             InkWell(
               child: Row(
                 children: <Widget>[
                   Image.asset(
-                    url,
+                    image,
                     package: 'country_code_picker',
                     width: 33.0,
                     height: 20.0,
@@ -282,7 +251,7 @@ class _ExchangeRemittanceState extends State<ExchangeRemittance> {
                     width: 6.0,
                   ),
                   Text(
-                    title,
+                    currency,
                     style: TextStyle(color: Color(0xff727272), fontSize: 16.0),
                   ),
                   SizedBox(
@@ -301,9 +270,9 @@ class _ExchangeRemittanceState extends State<ExchangeRemittance> {
             ),
             Expanded(
                 child: TextField(
-              enabled: false,
+              enabled: isfrom ? true : false,
               textAlign: TextAlign.right,
-              controller: _controller2,
+              controller: con,
               style: TextStyle(color: Color(0xffadadad), fontSize: 16.0),
               decoration: InputDecoration(
                 border: InputBorder.none,

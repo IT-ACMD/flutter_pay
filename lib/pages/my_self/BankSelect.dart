@@ -149,18 +149,6 @@ List<Map> eBanks = [
   //"data": [
   {
     "summ": "单笔5万，日累计20万",
-    "name": "浦发银行",
-    "logo": "http://oo6o93zxg.bkt.clouddn.com//BankInfo/SPDB.png",
-    "numb": "310290000013"
-  },
-  {
-    "summ": "单笔5万，日累计20万",
-    "name": "中国工商银行",
-    "logo": "http://oo6o93zxg.bkt.clouddn.com//BankInfo/ICBC.png",
-    "numb": "102100099996"
-  },
-  {
-    "summ": "单笔5万，日累计20万",
     "name": "中国农业银行",
     "logo": "http://oo6o93zxg.bkt.clouddn.com//BankInfo//ABC.png",
     "numb": "103100000026"
@@ -174,9 +162,29 @@ List<Map> eBanks = [
   {
     "summ": "单笔5万，日累计20万",
     "name": "中国建设银行",
-    "logo": "http://oo6o93zxg.bkt.clouddn.com//BankInfo/CCB.png",
+    "logo": 'images/ccb.png',//"http://oo6o93zxg.bkt.clouddn.com//BankInfo/CCB.png",
     "numb": "105100000017"
   },
+  {
+    "summ": "单笔5万，日累计20万",
+    "name": "中国邮政储蓄银行",
+    "logo": "http://oo6o93zxg.bkt.clouddn.com//BankInfo/PSBC.png",
+    "numb": "403100000004"
+  },
+]; /*
+  {
+    "summ": "单笔5万，日累计20万",
+    "name": "浦发银行",
+    "logo": "http://oo6o93zxg.bkt.clouddn.com//BankInfo/SPDB.png",
+    "numb": "310290000013"
+  },
+  {
+    "summ": "单笔5万，日累计20万",
+    "name": "中国工商银行",
+    "logo": "http://oo6o93zxg.bkt.clouddn.com//BankInfo/ICBC.png",
+    "numb": "102100099996"
+  },
+
   {
     "summ": "单笔5万，日累计20万",
     "name": "交通银行",
@@ -251,12 +259,6 @@ List<Map> eBanks = [
   },
   {
     "summ": "单笔5万，日累计20万",
-    "name": "中国邮政储蓄银行",
-    "logo": "http://oo6o93zxg.bkt.clouddn.com//BankInfo/PSBC.png",
-    "numb": "403100000004"
-  },
-  {
-    "summ": "单笔5万，日累计20万",
     "name": "北京银行",
     "logo": "http://oo6o93zxg.bkt.clouddn.com//BankInfo/BOB.png",
     "numb": "313100000013"
@@ -267,4 +269,4 @@ List<Map> eBanks = [
     "logo": "http://oo6o93zxg.bkt.clouddn.com//BankInfo/BCM.png",
     "numb": "325290000012"
   }
-];
+];*/

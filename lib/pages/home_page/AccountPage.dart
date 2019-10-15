@@ -28,7 +28,7 @@ class _AccountPageState extends State<AccountPage> {
           ],
         ))));
   }
-  
+
   buildPhoneTextField() {
     return Container(
         color: Colors.white,
@@ -57,25 +57,29 @@ class _AccountPageState extends State<AccountPage> {
               height: 8.0,
             ),
             InkWell(
-                child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                Text(
-                  'OPEN NEW ACCOUNT',
-                  style: TextStyle(
-                      fontSize: 12.0,
-                      color: Color(0xffC74F3A),
-                      fontWeight: FontWeight.w500),
-                ),
-                Image.asset(
-                  'images/forward.png',
-                  height: 12.0,
-                  width: 12.0,
-                  fit: BoxFit.contain,
-                  color: Color(0xffC74F3A),
-                )
-              ],
-            ))
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  Text(
+                    'OPEN NEW ACCOUNT',
+                    style: TextStyle(
+                        fontSize: 12.0,
+                        color: Color(0xffC74F3A),
+                        fontWeight: FontWeight.w500),
+                  ),
+                  Image.asset(
+                    'images/forward.png',
+                    height: 12.0,
+                    width: 12.0,
+                    fit: BoxFit.contain,
+                    color: Color(0xffC74F3A),
+                  )
+                ],
+              ),
+              onTap: () {
+                Navigator.of(context).pushNamed('账户余额');
+              },
+            )
           ],
         ));
   }

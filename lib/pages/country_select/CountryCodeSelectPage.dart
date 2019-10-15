@@ -7,10 +7,6 @@ import 'package:flutter_app/widget/title_barA.dart';
 import 'country_codes.dart';
 
 class CountryCodeSelect extends StatefulWidget {
-  /// elements passed as favorite
-  final List<CountryCode> favoriteElements;
-
-  const CountryCodeSelect({Key key, this.favoriteElements}) : super(key: key);
   _CountryCodeSelectState createState() => _CountryCodeSelectState();
 }
 
@@ -62,20 +58,6 @@ class _CountryCodeSelectState extends State<CountryCodeSelect> {
         child: ListView(
             children: [
           const DecoratedBox(decoration: BoxDecoration()),
-          /*: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[]
-                    ..addAll(widget.favoriteElements
-                        .map(
-                          (f) => SimpleDialogOption(
-                                child: _buildOption(f),
-                                onPressed: () {
-                                  _selectItem(f);
-                                },
-                              ),
-                        )
-                        .toList())
-                    ..add(const Divider())),*/
         ]..addAll(filteredElements.isEmpty
                 ? [_buildEmptySearchWidget(context)]
                 : filteredElements.map((e) => SimpleDialogOption(
@@ -93,8 +75,6 @@ class _CountryCodeSelectState extends State<CountryCodeSelect> {
       child: Flex(
         direction: Axis.horizontal,
         children: <Widget>[
-          /*widget.showFlag
-              ? */
           Flexible(
             child: Padding(
               padding: const EdgeInsets.only(right: 16.0),
@@ -105,14 +85,10 @@ class _CountryCodeSelectState extends State<CountryCodeSelect> {
               ),
             ),
           ),
-          /*: Container(),*/
           Expanded(
             flex: 4,
             child: Text(
               e.toLongString(),
-              /*widget.showCountryOnly
-                  ? e.toCountryStringOnly()
-                  : e.toLongString(),*/
               overflow: TextOverflow.fade,
             ),
           ),
@@ -125,7 +101,6 @@ class _CountryCodeSelectState extends State<CountryCodeSelect> {
     /*if (widget.emptySearchBuilder != null) {
       return widget.emptySearchBuilder(context);
     }*/
-
     return Center(child: Text('No Country Found'));
   }
 

@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_app/data/bankData.dart';
+import 'package:flutter_app/data/dataCenter.dart';
 import 'package:flutter_app/tools/ECHttp.dart';
 import 'package:flutter_app/widget/AppTitleBar.dart';
 import 'package:flutter_app/widget/title_barA.dart';
@@ -29,7 +29,7 @@ class _MyBankCardAddState extends State<MyBankCardAdd> {
   Widget build(BuildContext context) {
     return new Scaffold(
         appBar: AppBarA(
-          child: AppTitleBar(title: 'TinhTinh Personal information'),
+          child: AppTitleBar(title: 'TinhTinh Bank card Add'),
         ),
         body: new Container(
           color: Colors.white,
@@ -208,30 +208,37 @@ class _MyBankCardAddState extends State<MyBankCardAdd> {
             style: TextStyle(color: Colors.white, fontSize: 18.0)),
         color: Color(0xffC74F3A),
         onPressed: () {
-          if (newbank == null ||
-              newbank.bankName == null ||
-              newbank.branch == null ||
-              newbank.cardNumber == null ||
-              newbank.cardUser == null) return;
-          //添加到数据库
-          Map map = {
-            "cardUser": newbank.cardUser,
-            "bankName": newbank.bankName,
-            "cardNumber": newbank.cardNumber,
-            "branch": newbank.branch
-          };
-          ECHttp.postDataJson('user/user-bank/insertbank', map).then((result) {
-            if (result != null) {
-              var jsonData = json.decode(result);
-              if (jsonData['success']) {
-                return true;
-              }
-            }
-          });
-          Navigator.of(context).pop(true);
+          toAddBankCard();
         },
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.0)),
       ),
     );
+  }
+
+  toAddBankCard() {
+    if (newbank == null ||
+        newbank.bankName == null ||
+        newbank.branch == null ||
+        newbank.cardNumber == null ||
+        newbank.cardUser == null) return;
+    //添加到数据库
+    Map map = {
+      "cardUser": newbank.cardUser,
+      "bankName": newbank.bankName,
+      "cardNumber": newbank.cardNumber,
+      "branch": newbank.branch
+    };
+    ECHttp.postDataJson('user/user-bank/insertbank', map).then((result) {
+      if (result != null) {
+        var jsonData = json.decode(result);
+        if (jsonData['success']) {
+          //去拉去最新数据
+          getUserBankAll().then((res) {
+            setState(() {});
+            Navigator.of(context).pop(true);
+          });
+        }
+      }
+    });
   }
 }

@@ -15,6 +15,9 @@ class BankInfo {
   ///银行卡开户行 (中国建设银行北京新华支行，中国建设银行北京新华支行)
   String branch;
 
+  ///银行logo
+  String logo;
+
   BankInfo([
     this.bankName,
     this.cardUser,

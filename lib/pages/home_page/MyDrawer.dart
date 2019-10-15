@@ -23,7 +23,7 @@ class MyDrawer extends StatelessWidget {
     'Account',
     'Living expenses',
     'Contact us',
-    'My ThinThin'
+    'My TinhTinh'
   ];
 
   // 菜单文本前面的图标

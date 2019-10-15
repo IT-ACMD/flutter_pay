@@ -7,6 +7,9 @@ import 'package:flutter_app/data/dataCenter.dart';
 
 import '../config.dart';
 
+typedef Future<bool> HttpAuthenticationCallback(
+    Uri uri, String scheme, String realm);
+
 class ECHttp {
   static getData(url, list) async {
     print('------getData--------');
@@ -71,10 +74,26 @@ class ECHttp {
     return result;
   }
 
-  static postDataJson(String url, Map map) async {
+  static postDataJson(String url, Map map,
+      [String userName, String userPwd]) async {
     print('------postDataJson--------');
     var result;
     HttpClient httpClient = new HttpClient();
+
+    /*httpClient.authenticate = (Uri url, String scheme, String realm) async {
+      //if (url.host == "xx.com" && realm == "admin") {
+      httpClient.addCredentials(
+        url,
+        "admin",
+        new HttpClientBasicCredentials("+86", "13657909357"),
+      );
+      return true;
+      //}
+      //return false;
+    };*/
+    //httpClient.addCredentials(Uri.parse('$eServiceUrl$url'), 'admin', credentials);
+    //final http = IOClient(httpClient);
+
     HttpClientRequest request =
         await httpClient.postUrl(Uri.parse('$eServiceUrl$url'));
 
@@ -101,6 +120,13 @@ class ECHttp {
     return result;
   }
 }
+
+HttpAuthenticationCallback _basicAuthenticationCallback(
+        HttpClient client, HttpClientCredentials credentials) =>
+    (Uri uri, String scheme, String realm) {
+      client.addCredentials(uri, realm, credentials);
+      return new Future.value(true);
+    };
 
 /*.then((data) {
         
