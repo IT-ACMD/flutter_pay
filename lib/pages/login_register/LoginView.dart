@@ -375,7 +375,7 @@ class _LoginViewState extends State<LoginView> {
           style: TextStyle(color: Colors.white),
           obscureText: selIcon == visible ? true : false,
           decoration: InputDecoration(
-            hintText: 'Passworld',
+            hintText: 'Password',
             hintStyle: TextStyle(color: Color(0xffADADAD), fontSize: 16.0),
             border: InputBorder.none,
           ),

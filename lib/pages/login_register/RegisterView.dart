@@ -347,7 +347,7 @@ class _RegisterViewState extends State<RegisterView> {
           obscureText: true,
           //autovalidate: true,
           decoration: InputDecoration(
-            hintText: 'New passworld',
+            hintText: 'New password',
             hintStyle: TextStyle(color: Color(0xffadadad), fontSize: 16.0),
             border: InputBorder.none,
           ),
