@@ -213,7 +213,7 @@ setAccoutRateAlert(Map map) async {
   /*Map map = {
     'heartRateAlert': value,
   };*/
-  String data = await ECHttp.postDataJson('user/user/save', map);
+  String data = await ECHttp.postDataJson('user/user/update', map);
   if (data != null && data.length > 0) {
     var jsonData = json.decode(data);
     if (jsonData['success']) {

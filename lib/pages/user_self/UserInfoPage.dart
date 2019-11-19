@@ -3,6 +3,7 @@ import 'package:flutter_app/data/dataCenter.dart';
 import 'package:flutter_app/widget/AppTitleBar.dart';
 import 'package:flutter_app/widget/check_sex_dialog.dart';
 import 'package:flutter_app/widget/title_barA.dart';
+//import 'package:image_picker/image_picker.dart';
 
 import 'EditUserInfoPage.dart';
 
@@ -31,26 +32,34 @@ class _UserInfoPageState extends State<UserInfoPage> {
                 height: 11.0,
                 color: const Color(0xffF8F8F8),
               ),
-              new Container(
-                margin: new EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
-                height: 80.0,
-                child: new Row(
-                  children: <Widget>[
-                    new Expanded(
-                      child: new Text(
-                        'Head portrait',
-                        style: TextStyle(
-                            fontSize: 16.0, color: const Color(0xff222222)),
-                      ),
+              new InkWell(
+                  onTap: () {
+                    getImage().then((image) {
+                      if (image != null) {
+                        setState(() {});
+                      }
+                    });
+                  },
+                  child: new Container(
+                    margin: new EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
+                    height: 80.0,
+                    child: new Row(
+                      children: <Widget>[
+                        new Expanded(
+                          child: new Text(
+                            'Head portrait',
+                            style: TextStyle(
+                                fontSize: 16.0, color: const Color(0xff222222)),
+                          ),
+                        ),
+                        new Padding(
+                          padding: new EdgeInsets.fromLTRB(0.0, 0.0, 20.0, 0.0),
+                          child: new Image.asset(defaultAvatar,
+                              width: 64.0, height: 64.0),
+                        ),
+                      ],
                     ),
-                    new Padding(
-                      padding: new EdgeInsets.fromLTRB(0.0, 0.0, 20.0, 0.0),
-                      child: new Image.asset(defaultAvatar,
-                          width: 64.0, height: 64.0),
-                    ),
-                  ],
-                ),
-              ),
+                  )),
               new Container(
                 height: 9.0,
                 color: const Color(0xffF8F8F8),
@@ -159,7 +168,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
                       new Padding(
                         padding: new EdgeInsets.fromLTRB(0.0, 0.0, 20.0, 0.0),
                         child: new Text(
-                          '',
+                          eUserInfo.cardId,
                           style: TextStyle(
                               fontSize: 16.0, color: const Color(0xff9A9A9A)),
                         ),
@@ -206,10 +215,16 @@ class _UserInfoPageState extends State<UserInfoPage> {
         ));
   }
 
+  Future getImage() async {
+    //var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    //return image;
+  }
+
   _startEditUserInfoPage() async {
     final result = await Navigator.push(
       context,
-      new MaterialPageRoute(builder: (context) => new EditUserInfoPage(eUserInfo.name)),
+      new MaterialPageRoute(
+          builder: (context) => new EditUserInfoPage(eUserInfo.name)),
     );
     if (result != null) {
       setState(() {

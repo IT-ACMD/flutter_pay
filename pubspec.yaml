@@ -33,6 +33,7 @@ dependencies:
   country_code_picker: ^1.1.7   #国家地区选择器
   simple_animations: ^1.3.3   #动画
   url_launcher: ^4.2.0    #调用浏览器
+  # image_picker: ^0.4.0    #调用本地相册
   qr_flutter:   #生成二维码
     git:
       url: git://github.com/lukef/qr.flutter.git
