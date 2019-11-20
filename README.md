@@ -1,4 +1,4 @@
-# flutter_app
+# flutter_pay
 
 A new Flutter application.
 
